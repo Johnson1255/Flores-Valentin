@@ -267,3 +267,173 @@ button:hover {
         justify-content: center;
     }
 }
+
+/* Header Styles */
+.main-header {
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Top Bar */
+.top-bar {
+    background: #ff4d6d;
+    color: white;
+    font-size: 0.9rem;
+    padding: 8px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-info span {
+    margin-right: 20px;
+}
+
+.contact-info i,
+.opening-hours i {
+    margin-right: 5px;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icons a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.social-icons a:hover {
+    opacity: 0.8;
+}
+
+/* Main Header Content */
+.main-header-content {
+    padding: 20px 0;
+}
+
+.main-header-content .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.brand-text h1 {
+    color: #ff4d6d;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.brand-text p {
+    color: #666;
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 2px solid #ff4d6d;
+    border-radius: 25px;
+    background: transparent;
+    color: #ff4d6d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.action-button:hover {
+    background: #ff4d6d;
+    color: white;
+    text-decoration: none;
+}
+
+.action-button.primary {
+    background: #ff4d6d;
+    color: white;
+}
+
+.action-button.primary:hover {
+    background: #ff3355;
+    border-color: #ff3355;
+}
+
+/* Nav Placeholder for Sticky Menu */
+.nav-placeholder {
+    height: 60px; /* Ajusta esta altura según el alto que tendrá el menú sticky */
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .top-bar .container {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .main-header-content .container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .logo-container {
+        flex-direction: column;
+    }
+    
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .action-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-info span {
+        display: block;
+        margin: 5px 0;
+    }
+    
+    .top-bar-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
