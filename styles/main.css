@@ -437,3 +437,95 @@ button:hover {
         gap: 10px;
     }
 }
+
+/* Estilos del botón de música */
+.music-control {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.music-button {
+    background: #ff4d6d;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.music-button i {
+    color: white;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    z-index: 2;
+}
+
+.music-button:hover {
+    transform: scale(1.05);
+    background: #ff3355;
+}
+
+.music-button.playing .fa-music {
+    animation: pulse 1s infinite;
+}
+
+/* Contenedor de ondas ajustado */
+.music-waves {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.music-button.playing .music-waves {
+    display: block;
+}
+
+/* Ajuste de las ondas individuales */
+.music-waves span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    animation: none;
+}
+
+.music-button.playing .music-waves span {
+    animation: waves 2s infinite;
+}
+
+.music-waves span:nth-child(1) { animation-delay: 0.0s; }
+.music-waves span:nth-child(2) { animation-delay: 0.3s; }
+.music-waves span:nth-child(3) { animation-delay: 0.6s; }
+.music-waves span:nth-child(4) { animation-delay: 0.9s; }
+
+/* Animación de ondas ajustada */
+@keyframes waves {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
