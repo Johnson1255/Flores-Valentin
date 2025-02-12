@@ -554,3 +554,133 @@ button:hover {
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+
+/* Estilos para el catálogo */
+#catalogo .card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#catalogo .card:hover {
+    transform: translateY(-5px);
+}
+
+#catalogo .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+#catalogo .btn-primary {
+    background-color: #ff4d6d;
+    border-color: #ff4d6d;
+}
+
+#catalogo .btn-primary:hover {
+    background-color: #ff3355;
+    border-color: #ff3355;
+}
+
+/* Contenedor principal de la ubicación */
+.location-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Panel de información */
+.location-info-panel {
+    height: 100%;
+}
+
+.info-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.info-card h3 {
+    color: #ff4d6d;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.info-item:hover {
+    background-color: #fff5f7;
+}
+
+.info-item i {
+    color: #ff4d6d;
+    font-size: 1.2rem;
+    margin-top: 4px;
+}
+
+.info-item p {
+    margin: 0;
+    color: #666;
+}
+
+.info-item strong {
+    display: block;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Contenedor del mapa */
+.map-wrapper {
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .location-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-wrapper {
+        height: 350px;
+    }
+    
+    .info-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* Estilos para los controles del mapa */
+.leaflet-control-zoom {
+    margin-right: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+.leaflet-control-zoom a {
+    color: #ff4d6d !important;
+    border-color: #ff4d6d !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #ff4d6d !important;
+    color: white !important;
+}

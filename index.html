@@ -11,9 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Borel&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-     <!-- bootstrap -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
     <div class="music-control">
@@ -72,29 +74,31 @@
         </div>
     </header>
     
-    <!-- Espacio reservado para el menú sticky que implementará -->
+    <!-- Espacio reservado para el menú sticky -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Inicio</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="#">cosa1</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">cosa2</a>
-              </li>
-              <li class="nav-item dropdown">
-              </li>
-            </ul>
-          </div>
+            <a class="navbar-brand" href="#home">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#catalogo">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#galeria">Galería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ubicacion">Ubicación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
-
-
+    </nav>
     
     <section id="home">
         <div class="banner-container">
@@ -105,6 +109,50 @@
         </div>
     </section>
     
+    <section id="catalogo" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Nuestro Catálogo</h2>
+            <div class="row g-4">
+                <!-- Categoría 1 -->
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <img src="assets/images/rosas-rojas.jpg" class="card-img-top" alt="Rosas Rojas">
+                        <div class="card-body">
+                            <h5 class="card-title">Rosas Rojas</h5>
+                            <p class="card-text">Ramos elegantes de rosas rojas, perfectos para expresar amor y pasión.</p>
+                            <p class="card-text"><small class="text-muted">Desde $50.000</small></p>
+                            <a href="#" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categoría 2 -->
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <img src="assets/images/tulipanes.jpg" class="card-img-top" alt="Tulipanes">
+                        <div class="card-body">
+                            <h5 class="card-title">Tulipanes</h5>
+                            <p class="card-text">Arreglos coloridos de tulipanes holandeses frescos.</p>
+                            <p class="card-text"><small class="text-muted">Desde $45.000</small></p>
+                            <a href="#" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categoría 3 -->
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <img src="assets/images/orquideas.jpg" class="card-img-top" alt="Orquídeas">
+                        <div class="card-body">
+                            <h5 class="card-title">Orquídeas</h5>
+                            <p class="card-text">Elegantes arreglos de orquídeas para ocasiones especiales.</p>
+                            <p class="card-text"><small class="text-muted">Desde $75.000</small></p>
+                            <a href="#" class="btn btn-primary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="galeria">
         <h2>Galería de Imágenes</h2>
         <div class="gallery">
@@ -114,6 +162,51 @@
         </div>
     </section>
     
+    <section id="ubicacion" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Nuestra Ubicación</h2>
+            <div class="location-container">
+                <!-- Panel de información -->
+                <div class="location-info-panel">
+                    <div class="info-card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Visítanos</h3>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Dirección:</strong>
+                                <p>Av. Principal 123, Ciudad</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Teléfono:</strong>
+                                <p>+57 300 123 4567</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Horario de atención:</strong>
+                                <p>Lunes a Viernes: 9:00 - 20:00</p>
+                                <p>Sábados: 9:00 - 18:00</p>
+                                <p>Domingos: 10:00 - 14:00</p>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-3">
+                            <i class="fas fa-directions"></i> Cómo llegar
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Contenedor del mapa -->
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="video">
         <h2>Flores para San Valentín</h2>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/rrl4u6xIJUs?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -188,5 +281,6 @@
     
     <script src="scripts/main.js"></script>
     <script src="scripts/music.js"></script>
+    <script src="scripts/map.js"></script>
 </body>
 </html>
