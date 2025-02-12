@@ -15,5 +15,11 @@ Una landing page interactiva dedicada a celebrar el Día del Amor y la Amistad, 
 - JavaScript vanilla
 bienvenidas. Por favor, abre un issue para discutir cambios.
 
+## vistas
+home
+login
+ubicación
+catalogo
+
 ## Licencia
 [MIT]
