@@ -260,3 +260,52 @@ input:focus {
         flex-direction: column;
     }
 }
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.checkbox-label.required {
+    color: #333;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    padding: 0;
+}
+
+/* Estilo para campos requeridos */
+label::after {
+    content: "*";
+    color: #ff4d6d;
+    margin-left: 4px;
+}
+
+label:not([for="ocasiones"])::after {
+    content: "*";
+    color: #ff4d6d;
+    margin-left: 4px;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: #ff4d6d;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}
+
+.input-error {
+    border-color: #ff4d6d;
+}

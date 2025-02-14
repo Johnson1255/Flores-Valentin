@@ -58,6 +58,138 @@
                 </button>
             </form>
 
+            <form class="register-form" style="display: none;">
+                <!-- Información Personal -->
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="apellidos">Apellidos</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="apellidos" name="apellidos" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="email-registro">Correo Electrónico</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email-registro" name="email" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+                </div>
+            
+                <!-- Dirección de Entrega -->
+
+                <div class="form-group">
+                    <label for="pais">País</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-globe"></i>
+                        <input type="text" id="pais" name="pais" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ciudad">Ciudad</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-city"></i>
+                        <input type="text" id="ciudad" name="ciudad" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="barrio">Barrio</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-h-square"></i>
+                        <input type="text" id="barrio" name="barrio" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección de Entrega</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-home"></i>
+                        <input type="text" id="direccion" name="direccion" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="codigo-postal">Código Postal</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="codigo-postal" name="codigo-postal" required>
+                    </div>
+                </div>
+            
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label for="password-registro">Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password-registro" name="password" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                </div>
+            
+                <!-- Preferencias -->
+                <div class="form-group">
+                    <label for="ocasiones">Ocasiones de interés (opcional)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="ocasiones" value="cumpleanos"> Cumpleaños
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="ocasiones" value="aniversarios"> Aniversarios
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="ocasiones" value="bodas"> Bodas
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="ocasiones" value="condolencias"> Condolencias
+                        </label>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="newsletter" value="true">
+                        Deseo recibir ofertas y novedades por correo electrónico
+                    </label>
+                </div>
+            
+                <div class="form-group">
+                    <label class="checkbox-label required">
+                        <input type="checkbox" name="terminos" required>
+                        Acepto los términos y condiciones y la política de privacidad*
+                    </label>
+                </div>
+            
+                <button type="submit" class="login-button">
+                    Crear Cuenta
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
             <div class="social-login">
                 <p>O inicia sesión con</p>
                 <div class="social-buttons">
@@ -71,7 +203,10 @@
                     </button>
                 </div>
             </div>
+            
         </div>
     </div>
+
+    <script src="scripts/login.js"></script>
 </body>
 </html>
