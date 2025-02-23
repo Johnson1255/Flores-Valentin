@@ -1,5 +1,5 @@
 let sound = new Howl({
-    src: ['assets/audios/romantic-saxophone-244539.mp3'],
+    src: ['/audios/romantic-saxophone-244539.mp3'],
     loop: true,
     volume: 0.5
 });
