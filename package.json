@@ -1,0 +1,28 @@
+{
+  "name": "plataformas-taller1",
+  "version": "1.0.0",
+  "description": "Una página web responsive para una floristería especializada en arreglos florales para San Valentín. Este proyecto fue desarrollado como parte de un trabajo universitario para demostrar habilidades en desarrollo web.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Johnson1255/Plataformas-Taller1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Johnson1255/Plataformas-Taller1/issues"
+  },
+  "homepage": "https://github.com/Johnson1255/Plataformas-Taller1#readme",
+  "devDependencies": {
+    "vite": "^6.1.1",
+    "vite-plugin-imagemin": "^0.6.1"
+  }
+}
