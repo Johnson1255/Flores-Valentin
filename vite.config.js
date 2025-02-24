@@ -2,6 +2,11 @@ import { defineConfig } from 'vite'
 import viteImagemin from 'vite-plugin-imagemin'
 
 export default defineConfig({
+    base: '/Plataformas-Taller1/',
+    build: {
+        outDir: 'dist',
+        assetsDir: 'assets'
+    },
     plugins: [
         viteImagemin({
             gifsicle: {
