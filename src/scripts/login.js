@@ -1,3 +1,5 @@
+import '../styles/login.css';
+
 const tabButtons = document.querySelectorAll('.tab-button');
 const loginForm = document.querySelector('.login-form');
 const registerForm = document.querySelector('.register-form');
