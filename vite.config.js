@@ -2,10 +2,16 @@ import { defineConfig } from 'vite'
 import viteImagemin from 'vite-plugin-imagemin'
 
 export default defineConfig({
-    base: '/',
+    base: '/Plataformas-Taller1/',
     build: {
         outDir: 'dist',
-        assetsDir: 'assets'
+        assetsDir: 'assets',
+        rollupOptions: {
+            input: {
+                main: './index.html',
+                login: './login.html'
+            }
+        }
     },
     plugins: [
         viteImagemin({
