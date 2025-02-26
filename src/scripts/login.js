@@ -1,4 +1,4 @@
-import '../styles/login.css';
+import '../styles/login.pcss';
 
 const tabButtons = document.querySelectorAll('.tab-button');
 const loginForm = document.querySelector('.login-form');

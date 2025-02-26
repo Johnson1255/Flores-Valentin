@@ -39,28 +39,28 @@ body {
     font-size: 0.9rem;
     margin-bottom: 25px;
     transition: color 0.3s;
-}
-
-.back-button:hover {
-    color: #ff4d6d;
+    
+    &:hover {
+        color: #ff4d6d;
+    }
 }
 
 /* Header Section */
 .login-header {
     text-align: center;
     margin-bottom: 30px;
+    
+    & h1 {
+        color: #333;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
 }
 
 .login-logo {
     width: 80px;
     height: 80px;
     margin-bottom: 20px;
-}
-
-.login-header h1 {
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
 }
 
 .login-message {
@@ -85,11 +85,11 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-}
-
-.tab-button.active {
-    color: #ff4d6d;
-    border-bottom-color: #ff4d6d;
+    
+    &.active {
+        color: #ff4d6d;
+        border-bottom-color: #ff4d6d;
+    }
 }
 
 /* Form Styles */
@@ -102,18 +102,30 @@ label {
     margin-bottom: 8px;
     color: #333;
     font-weight: 600;
+    
+    &::after {
+        content: "*";
+        color: #ff4d6d;
+        margin-left: 4px;
+    }
+    
+    &:not([for="ocasiones"])::after {
+        content: "*";
+        color: #ff4d6d;
+        margin-left: 4px;
+    }
 }
 
 .input-with-icon {
     position: relative;
-}
-
-.input-with-icon i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
+    
+    & i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
 }
 
 input {
@@ -123,11 +135,11 @@ input {
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s;
-}
-
-input:focus {
-    outline: none;
-    border-color: #ff4d6d;
+    
+    &:focus {
+        outline: none;
+        border-color: #ff4d6d;
+    }
 }
 
 /* Form Options */
@@ -150,10 +162,10 @@ input:focus {
     color: #ff4d6d;
     text-decoration: none;
     font-size: 0.9rem;
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
+    
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 /* Login Button */
@@ -172,40 +184,40 @@ input:focus {
     justify-content: center;
     gap: 10px;
     transition: background 0.3s;
-}
-
-.login-button:hover {
-    background: #ff3355;
+    
+    &:hover {
+        background: #ff3355;
+    }
 }
 
 /* Social Login */
 .social-login {
     margin-top: 30px;
     text-align: center;
-}
-
-.social-login p {
-    color: #666;
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.social-login p::before,
-.social-login p::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 30%;
-    height: 1px;
-    background: #ddd;
-}
-
-.social-login p::before {
-    left: 0;
-}
-
-.social-login p::after {
-    right: 0;
+    
+    & p {
+        color: #666;
+        margin-bottom: 15px;
+        position: relative;
+        
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        &::before {
+            left: 0;
+        }
+        
+        &::after {
+            right: 0;
+        }
+    }
 }
 
 .social-buttons {
@@ -227,21 +239,21 @@ input:focus {
     justify-content: center;
     gap: 8px;
     transition: all 0.3s;
-}
-
-.social-button:hover {
-    background: #f8f8f8;
-    border-color: #ccc;
-}
-
-.social-button.google:hover {
-    color: #DB4437;
-    border-color: #DB4437;
-}
-
-.social-button.facebook:hover {
-    color: #4267B2;
-    border-color: #4267B2;
+    
+    &:hover {
+        background: #f8f8f8;
+        border-color: #ccc;
+    }
+    
+    &.google:hover {
+        color: #DB4437;
+        border-color: #DB4437;
+    }
+    
+    &.facebook:hover {
+        color: #4267B2;
+        border-color: #4267B2;
+    }
 }
 
 /* Responsive Design */
@@ -274,28 +286,15 @@ input:focus {
     gap: 8px;
     color: #666;
     font-size: 0.9rem;
-}
-
-.checkbox-label.required {
-    color: #333;
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: auto;
-    padding: 0;
-}
-
-/* Estilo para campos requeridos */
-label::after {
-    content: "*";
-    color: #ff4d6d;
-    margin-left: 4px;
-}
-
-label:not([for="ocasiones"])::after {
-    content: "*";
-    color: #ff4d6d;
-    margin-left: 4px;
+    
+    &.required {
+        color: #333;
+    }
+    
+    & input[type="checkbox"] {
+        width: auto;
+        padding: 0;
+    }
 }
 
 /* Mensaje de error */
