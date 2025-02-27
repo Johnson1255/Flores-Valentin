@@ -5,11 +5,19 @@ function getThemePreference() {
     return localStorage.getItem('theme') || 'light';
   }
   
-  // Función para aplicar el tema
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+// Función para aplicar el tema
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  
+  // Añadir soporte para Bootstrap 5 dark mode
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-bs-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-bs-theme');
   }
+  
+  localStorage.setItem('theme', theme);
+}
   
   // Función para alternar entre temas
   function toggleTheme() {
