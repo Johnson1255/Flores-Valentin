@@ -24,8 +24,11 @@
   "homepage": "https://github.com/Johnson1255/Plataformas-Taller1#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.3",
+    "postcss-custom-properties": "^14.0.4",
+    "postcss-import": "^16.1.0",
     "postcss-nested": "^7.0.2",
     "vite": "^6.1.1",
     "vite-plugin-imagemin": "^0.6.1"

@@ -10,11 +10,12 @@ body {
 
 /* Menú de navegación */
 .navbar {
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     background-color: #ff4d6d !important;
     font-weight: bold;
+    z-index: 1020;
     
     & .nav-link {
         color: #575757;
@@ -327,6 +328,8 @@ button {
     color: white;
     font-size: 0.9rem;
     padding: 8px 0;
+    position: relative;
+    z-index: 1030;
 }
 
 .container {
@@ -714,4 +717,91 @@ button {
             color: white !important;
         }
     }
+}
+
+/* Modo oscuro */
+#dark-mode-toggle {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#dark-mode-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --header-bg: #ff4d6d;
+    --card-bg: #ffffff;
+    --footer-bg: #2b293d;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Variables para modo oscuro */
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #f5f5f5;
+    --header-bg: #c03050;
+    --card-bg: #2d2d2d;
+    --footer-bg: #222222;
+    --border-color: #444444;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Aplicar variables a los elementos */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.top-bar {
+    background: var(--header-bg);
+}
+
+.navbar {
+    background-color: var(--header-bg) !important;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.main-footer {
+    background-color: var(--footer-bg);
+}
+
+/* Ajustar colores adicionales según sea necesario */
+.dark-mode .card {
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.dark-mode .gallery img {
+    border-color: var(--border-color);
+}
+
+.dark-mode .btn-primary {
+    background-color: #c03050;
+    border-color: #c03050;
+}
+
+.dark-mode .navbar-light .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Añadir transiciones suaves */
+.navbar, .card, .main-footer, .gallery img, .btn {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
