@@ -1,42 +1,43 @@
-import '../styles/main.pcss';
+// Archivo: /src/scripts/theme.js
 
-document.addEventListener('DOMContentLoaded', function () {
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const moonIcon = '<i class="fas fa-moon"></i>';
-    const sunIcon = '<i class="fas fa-sun"></i>';
-
-    // Función para alternar el modo oscuro
-    function toggleDarkMode() {
-        if (document.documentElement.classList.contains('dark-mode')) {
-            // Cambiar a modo claro
-            document.documentElement.classList.remove('dark-mode');
-            localStorage.setItem('theme', 'light');
-            darkModeToggle.innerHTML = moonIcon;
-        } else {
-            // Cambiar a modo oscuro
-            document.documentElement.classList.add('dark-mode');
-            localStorage.setItem('theme', 'dark');
-            darkModeToggle.innerHTML = sunIcon;
-        }
+// Función para verificar la preferencia guardada del usuario
+function getThemePreference() {
+    return localStorage.getItem('theme') || 'light';
+  }
+  
+  // Función para aplicar el tema
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+  
+  // Función para alternar entre temas
+  function toggleTheme() {
+    const currentTheme = getThemePreference();
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(newTheme);
+    
+    // Opcional: añadir una línea de log para depuración
+    console.log('Tema cambiado a:', newTheme);
+  }
+  
+  // Inicializar el tema cuando se carga la página
+  function initTheme() {
+    const savedTheme = getThemePreference();
+    applyTheme(savedTheme);
+    
+    // Añadir event listener al botón de tema si existe
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', toggleTheme);
+      console.log('Botón de tema inicializado');
+    } else {
+      console.error('El botón de tema no se encontró en el DOM');
     }
-
-    // Comprobar preferencia guardada
-    const savedTheme = localStorage.getItem('theme');
-
-    if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark-mode');
-        darkModeToggle.innerHTML = sunIcon;
-    } else if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark-mode');
-        darkModeToggle.innerHTML = moonIcon;
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // Si no hay preferencia guardada, usar la preferencia del sistema
-        document.documentElement.classList.add('dark-mode');
-        darkModeToggle.innerHTML = sunIcon;
-    }
-
-    // Añadir event listener al botón
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-    }
-});
+  }
+  
+  // Ejecutar al cargar el documento
+  document.addEventListener('DOMContentLoaded', initTheme);
+  
+  // Exportar todas las funciones
+  export { toggleTheme, getThemePreference, applyTheme, initTheme };

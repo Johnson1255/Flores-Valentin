@@ -1,0 +1,7 @@
+import"./theme-9tR65ycm.js";let s=document.querySelectorAll(".banner"),a=0;function c(){s.forEach((e,t)=>{e.style.display=t===a?"block":"none"}),a=(a+1)%s.length}setInterval(c,3e3);let r=new Howl({src:["/audios/romantic-saxophone-244539.mp3"],loop:!0,volume:.5});const i=document.getElementById("musicToggle");let o=!1;i.addEventListener("click",()=>{o?(r.pause(),i.classList.remove("playing")):(r.play(),i.classList.add("playing")),o=!o});document.addEventListener("click",function e(){o||(r.play(),i.classList.add("playing"),o=!0),document.removeEventListener("click",e)},{once:!0});document.addEventListener("DOMContentLoaded",function(){const e=6.241362256908526,t=-75.58840591379317,n=L.map("map").setView([e,t],15);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(n);const l=L.icon({iconUrl:"assets/images/logo.svg",iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-32]});L.marker([e,t],{icon:l}).addTo(n).bindPopup(`
+        <div style="text-align: center;">
+            <h5 style="color: #ff4d6d; margin-bottom: 8px;">Flores para San Valentín</h5>
+            <p style="margin: 0;">Av. Principal 123, Ciudad</p>
+            <p style="margin: 5px 0;"><strong>Tel:</strong> +57 300 123 4567</p>
+        </div>
+    `).openPopup(),L.circle([e,t],{color:"red",fillColor:"#f03",fillOpacity:.5,radius:500}).addTo(n),n.zoomControl.setPosition("bottomright")});
