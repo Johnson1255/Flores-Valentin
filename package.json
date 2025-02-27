@@ -32,5 +32,8 @@
     "postcss-nested": "^7.0.2",
     "vite": "^6.1.1",
     "vite-plugin-imagemin": "^0.6.1"
+  },
+  "dependencies": {
+    "node-polyglot": "^2.6.0"
   }
 }
