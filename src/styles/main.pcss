@@ -23,8 +23,8 @@
   --footer-dark-bg: rgba(0, 0, 0, 0.1);
 }
 
-[data-theme="dark"] {
-  /* Variables para el tema oscuro */
+/* Estilo para tema oscuro */
+html[data-theme="dark"] {
   --background-color: #222222;
   --text-color: #f5f5f5;
   --heading-color: #ffffff;
@@ -47,7 +47,12 @@
   --footer-dark-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos generales */
+/* Estilos base para html y body */
+html {
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
+}
+
 body {
   font-family: 'Raleway', sans-serif;
   margin: 0;
@@ -56,6 +61,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh; /* Asegura que el body ocupe toda la altura */
 }
 
 /* Menú de navegación */
@@ -66,10 +72,12 @@ body {
   background-color: var(--primary-color) !important;
   font-weight: bold;
   z-index: 1020;
+  transition: background-color 0.3s ease;
 }
 
 .navbar .nav-link {
   color: var(--white-color);
+  transition: color 0.3s ease;
 }
 
 /* Banner */
@@ -79,6 +87,7 @@ body {
   height: 350px;
   overflow: hidden;
   margin-top: 0px;
+  background-color: var(--background-color); /* Asegura que el fondo coincida */
 }
 
 .banner-title {
@@ -95,6 +104,7 @@ body {
   padding: 0 20px;
   margin: 0;
   text-align: center;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .banner {
@@ -113,12 +123,15 @@ body {
 /* Galería */
 #galeria {
   padding: 40px 20px;
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
 }
 
 #galeria h2 {
   text-align: center;
   margin-bottom: 30px;
   color: var(--heading-color);
+  transition: color 0.3s ease;
 }
 
 .gallery {
@@ -135,12 +148,13 @@ body {
   height: 250px;
   object-fit: cover;
   border-radius: 10px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .gallery img:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 12px var(--shadow-color);
 }
 
 @media (max-width: 768px) {
@@ -168,11 +182,14 @@ body {
   padding: 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
 }
 
 #video h2 {
   text-align: center;
   color: var(--heading-color);
+  transition: color 0.3s ease;
 }
 
 #video iframe {
@@ -180,12 +197,20 @@ body {
   max-width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 8px var(--shadow-color);
+  transition: box-shadow 0.3s ease;
 }
 
 /* Formulario de contacto */
+#contacto {
+  background-color: var(--background-color);
+  padding: 40px 20px;
+  transition: background-color 0.3s ease;
+}
+
 #contacto h2 {
   text-align: center;
   color: var(--heading-color);
+  transition: color 0.3s ease;
 }
 
 form {
@@ -198,6 +223,7 @@ form {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input, textarea {
@@ -207,6 +233,7 @@ input, textarea {
   border-radius: 5px;
   background-color: var(--white-color);
   color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 button {
@@ -216,7 +243,7 @@ button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -237,6 +264,8 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  z-index: 999;
 }
 
 #float-button i {
@@ -250,6 +279,7 @@ button:hover {
   padding: 40px 0 0 0;
   margin-top: 50px;
   box-shadow: 0 -4px 8px var(--shadow-color);
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .footer-content {
@@ -271,6 +301,7 @@ button:hover {
   margin-bottom: 20px;
   position: relative;
   padding-bottom: 10px;
+  transition: color 0.3s ease;
 }
 
 .footer-section h3::after {
@@ -281,6 +312,7 @@ button:hover {
   width: 50px;
   height: 2px;
   background-color: var(--white-color);
+  transition: background-color 0.3s ease;
 }
 
 .footer-section p {
@@ -340,6 +372,7 @@ button:hover {
   padding: 20px;
   background: var(--footer-dark-bg);
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .footer-links {
@@ -351,6 +384,7 @@ button:hover {
   text-decoration: none;
   margin: 0 10px;
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
@@ -372,12 +406,17 @@ button:hover {
   .social-links {
     justify-content: center;
   }
+  
+  form {
+    width: 90%;
+  }
 }
 
 /* Header Styles */
 .main-header {
   background: var(--header-bg);
   box-shadow: 0 2px 5px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Top Bar */
@@ -388,6 +427,7 @@ button:hover {
   padding: 8px 0;
   position: relative;
   z-index: 1030;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -425,7 +465,7 @@ button:hover {
 .social-icons a {
   color: var(--white-color);
   text-decoration: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 .social-icons a:hover {
@@ -435,6 +475,8 @@ button:hover {
 /* Main Header Content */
 .main-header-content {
   padding: 20px 0;
+  background-color: var(--header-bg);
+  transition: background-color 0.3s ease;
 }
 
 .main-header-content .container {
@@ -459,12 +501,14 @@ button:hover {
   color: var(--primary-color);
   margin: 0;
   font-size: 1.8rem;
+  transition: color 0.3s ease;
 }
 
 .brand-text p {
   color: var(--light-text);
   margin: 5px 0 0 0;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .header-actions {
@@ -641,8 +685,20 @@ button:hover {
 }
 
 /* Estilos para el catálogo */
+#catalogo {
+  background-color: var(--background-color);
+  padding: 40px 20px;
+  transition: background-color 0.3s ease;
+}
+
+#catalogo h2 {
+  color: var(--heading-color);
+  transition: color 0.3s ease;
+  margin-bottom: 30px;
+}
+
 #catalogo .card {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   border: none;
   box-shadow: 0 4px 8px var(--shadow-color);
   background-color: var(--card-bg);
@@ -651,6 +707,7 @@ button:hover {
 
 #catalogo .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 6px 12px var(--shadow-color);
 }
 
 #catalogo .card-img-top {
@@ -662,6 +719,7 @@ button:hover {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   color: var(--white-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #catalogo .btn-primary:hover {
@@ -670,11 +728,26 @@ button:hover {
 }
 
 /* Contenedor principal de la ubicación */
+#ubicacion {
+  background-color: var(--background-color);
+  padding: 40px 20px;
+  transition: background-color 0.3s ease;
+}
+
+#ubicacion h2 {
+  color: var(--heading-color);
+  transition: color 0.3s ease;
+  margin-bottom: 30px;
+}
+
 .location-container {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 30px;
   margin-top: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 768px) {
@@ -694,6 +767,7 @@ button:hover {
   border-radius: 15px;
   box-shadow: 0 4px 15px var(--shadow-color);
   height: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .info-card h3 {
@@ -703,6 +777,7 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -728,17 +803,20 @@ button:hover {
   color: var(--primary-color);
   font-size: 1.2rem;
   margin-top: 4px;
+  transition: color 0.3s ease;
 }
 
 .info-item p {
   margin: 0;
   color: var(--light-text);
+  transition: color 0.3s ease;
 }
 
 .info-item strong {
   display: block;
   color: var(--text-color);
   margin-bottom: 5px;
+  transition: color 0.3s ease;
 }
 
 /* Contenedor del mapa */
@@ -747,6 +825,7 @@ button:hover {
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 15px var(--shadow-color);
+  transition: box-shadow 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -769,6 +848,7 @@ button:hover {
 .leaflet-control-zoom a {
   color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .leaflet-control-zoom a:hover {
@@ -799,4 +879,18 @@ button:hover {
 
 #theme-toggle:hover {
   transform: scale(1.1);
+  background-color: var(--primary-hover);
+}
+
+/* Asegurar que todos los contenedores principales tengan fondo */
+.section {
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
+}
+
+/* Asegurar que no haya espacios sin color de fondo */
+html, body, #app, .main-content {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
 }
