@@ -4,7 +4,7 @@ module.exports = {
     autoprefixer: {},
     'postcss-import': {},
     'postcss-custom-properties': {
-      preserve: true // Cambia a true para preservar las variables CSS
+      preserve: true
     },
     'cssnano': process.env.NODE_ENV === 'production' ? {} : false
   }

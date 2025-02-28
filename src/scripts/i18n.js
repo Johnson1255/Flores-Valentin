@@ -1,4 +1,3 @@
-// src/scripts/i18n.js
 import Polyglot from 'node-polyglot';
 
 class I18nManager {
@@ -8,7 +7,7 @@ class I18nManager {
     this.phrases = {
       es: {}, // Español
       en: {}, // Inglés
-      // Puedes añadir más idiomas según necesites
+      // Podemos añadir más idiomas
     };
     
     this.loadTranslations();
@@ -17,7 +16,7 @@ class I18nManager {
   
   // Carga traducciones para todos los idiomas
   loadTranslations() {
-    // Español (original)
+    // Español
     this.phrases.es = {
       // General
       'welcome': 'Bienvenido a Flores San Valentín',

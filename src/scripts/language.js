@@ -1,4 +1,3 @@
-// src/scripts/languageSelector.js
 import i18n from './i18n.js';
 
 class LanguageSelector {

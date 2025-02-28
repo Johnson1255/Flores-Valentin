@@ -1,5 +1,3 @@
-// Archivo: /src/scripts/theme.js
-
 // Función para verificar la preferencia guardada del usuario
 function getThemePreference() {
     return localStorage.getItem('theme') || 'light';
