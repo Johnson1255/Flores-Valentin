@@ -37,6 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
+        // Verificación de contraseñas coincidentes
+        const password = registerForm.querySelector('#password-registro').value;
+        const confirmPassword = registerForm.querySelector('#confirm-password').value;
+        
+        if (password !== confirmPassword) {
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+        
         // Inputs de valores del registro
         const formData = {
             nombre: registerForm.querySelector('#nombre').value,
@@ -48,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             barrio: registerForm.querySelector('#barrio').value,
             direccion: registerForm.querySelector('#direccion').value,
             codigoPostal: registerForm.querySelector('#codigo-postal').value,
-            password: registerForm.querySelector('#password-registro').value,
+            password: password,
             ocasiones: Array.from(registerForm.querySelectorAll('input[name="ocasiones"]:checked'))
                     .map(input => input.value)
         };
@@ -71,15 +80,16 @@ document.addEventListener('DOMContentLoaded', () => {
         tabButtons[0].click(); // Cambia a la vista de login
     });
 
-
-
-
     // Manejo del login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
             
         const email = loginForm.querySelector('#email').value;
-        const passw = users.find(u => u.email === email && u.password === password);
+        const password = loginForm.querySelector('#password').value;
+        
+        // Obtener usuarios del localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.email === email && u.password === password);
 
         if (user) {
             // Guardar sesión actual
@@ -97,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Verificar si hay sesión activa
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser && currentUser.isLoggedIn) {
         window.location.href = '/index.html';
     }
-    });
+});
