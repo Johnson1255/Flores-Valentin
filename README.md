@@ -112,6 +112,11 @@ Flores San Valentín es una página web moderna y elegante diseñada para mostra
    npm install
    ```
 
+## Configuración del entorno
+
+1. Copia el archivo `.env.example` y renómbralo a `.env`
+2. Completa las variables de entorno con tus propias credenciales de Supabase
+
 ### Desarrollo
 Para iniciar el servidor de desarrollo:
 ```bash

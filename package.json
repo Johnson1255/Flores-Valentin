@@ -34,6 +34,7 @@
     "vite-plugin-imagemin": "^0.6.1"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "node-polyglot": "^2.6.0"
   }
 }
