@@ -15,6 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
     const registerForm = document.querySelector('.register-form');
 
+    // Función para obtener parámetros de la URL
+    function getUrlParams() {
+        const params = {};
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        
+        for (const [key, value] of urlParams.entries()) {
+            params[key] = value;
+        }
+        
+        return params;
+    }
+
     // Función para mostrar el formulario de inicio de sesión
     function showLoginForm() {
         loginTab.classList.add('active');
@@ -114,8 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (data?.user) {
-                    // Redireccionar al inicio
-                    window.location.href = '/index.html';
+                    // Obtener URL de retorno si existe
+                    const params = getUrlParams();
+                    const returnUrl = params.returnUrl || '/index.html';
+                    
+                    // Redireccionar a la página solicitada o al inicio
+                    window.location.href = returnUrl;
                 }
             } catch (err) {
                 console.error("Error durante el inicio de sesión:", err);
