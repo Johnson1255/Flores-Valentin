@@ -34,21 +34,26 @@ async function updateUIBasedOnSession() {
         
         // Actualizar los enlaces de los botones de acción para ir directamente a las páginas correspondientes
         actionButtons.forEach(button => {
-            button.replaceWith(button.cloneNode(true));
+            // Eliminar cualquier evento click previo clonando y reemplazando el botón
+            const newButton = button.cloneNode(true);
             
-            if (button.textContent.includes('Pedido Especial') || 
-                button.getAttribute('data-i18n') === 'special_order') {
-                button.href = './pedidoEspecial.html';
-            } else if (button.textContent.includes('Comprar Ahora') || 
-                      button.getAttribute('data-i18n') === 'buy_now') {
-                button.href = './canasta.html';
+            // Asignar los nuevos href antes de reemplazar
+            if (newButton.textContent.trim().includes('Pedido Especial') || 
+                newButton.getAttribute('data-i18n') === 'special_order') {
+                newButton.href = './pedidoEspecial.html';
+            } else if (newButton.textContent.trim().includes('Comprar Ahora') || 
+                      newButton.getAttribute('data-i18n') === 'buy_now') {
+                newButton.href = './canasta.html';
             }
+            // Reemplazar el botón original con el nuevo
+            button.parentNode.replaceChild(newButton, button);
         });
     } else {
         // Usuario sin sesión
         if (loginButton) loginButton.style.display = 'block';
         if (logoutButton) logoutButton.style.display = 'none';
         
+        // Asegurar que los botones de acción redirijan al login
         actionButtons.forEach(button => {
             button.href = './login.html';
         });

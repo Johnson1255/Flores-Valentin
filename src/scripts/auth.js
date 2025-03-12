@@ -62,7 +62,7 @@ export async function signOut() {
   try {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    window.location.href = '/login.html';
+    window.location.href = '/Plataformas-Taller1/login.html';
   } catch (error) {
     console.error('Error al cerrar sesión:', error.message);
   }

@@ -6,7 +6,7 @@ export async function protectAndRedirect(targetUrl) {
     
     if (!session) {
         // Si no hay sesión, redirigir al login con URL de retorno
-        window.location.href = `/login.html?returnUrl=${encodeURIComponent(targetUrl)}`;
+        window.location.href = `/Plataformas-Taller1/login.html?returnUrl=${encodeURIComponent(targetUrl)}`;
         return false;
     }
     
@@ -16,13 +16,15 @@ export async function protectAndRedirect(targetUrl) {
 // Función para aplicar protección a enlaces específicos
 export function setupProtectedLinks() {
     // Obtener todos los enlaces que necesitan protección
-    const protectedLinks = document.querySelectorAll('.action-button, .protected-link');
+    // Nota: Solo aplicamos esta protección a enlaces que NO sean action-button,
+    // ya que esos son manejados por updateUIBasedOnSession en main.js
+    const protectedLinks = document.querySelectorAll('.protected-link');
     
     protectedLinks.forEach(link => {
         const originalHref = link.getAttribute('href');
         
         // Solo modificar si no es ya el login
-        if (!originalHref.includes('login.html')) {
+        if (originalHref && !originalHref.includes('login.html')) {
             link.addEventListener('click', async (e) => {
                 e.preventDefault();
                 
