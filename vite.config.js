@@ -13,6 +13,9 @@ export default defineConfig({
             }
         }
     },
+    define: {
+        'process.env': {}
+    },
     plugins: [
         viteImagemin({
             gifsicle: {
