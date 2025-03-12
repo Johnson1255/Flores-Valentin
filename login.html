@@ -207,6 +207,25 @@
         </div>
     </div>
 
+        <!-- Agrega esto en algún lugar visible de tu login.html -->
+    <button id="theme-toggle" class="theme-toggle-btn">
+        <i class="fas fa-moon"></i> <!-- o fa-sun dependiendo del tema actual -->
+    </button>
+
+    <!-- También puedes agregar estos estilos en tu CSS -->
+    <style>
+    .theme-toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-color);
+    }
+    </style>
+
     <script type="module" src="/src/scripts/login.js"></script>
 </body>
 </html>
