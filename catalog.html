@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flores para San Valentín</title>
+    <link rel="stylesheet" href="./src/styles/main.pcss">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Borel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+    <div class="music-control">
+        <button id="musicToggle" class="music-button">
+            <i class="fas fa-music"></i>
+            <div class="music-waves">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+    </div>
+
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +57 300 123 4567</span>
+                    <span><i class="fas fa-envelope"></i> info@floresvalentin.com</span>
+                </div>
+                <div class="top-bar-right">
+                    <div class="opening-hours">
+                        <i class="fas fa-clock"></i> Lun - Vie: 9:00 - 20:00
+                        | Sab: 9:00 - 18:00 | Dom: 10:00 - 14:00
+                    </div>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        
+                        <button id="theme-toggle" aria-label="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Botones de inicio/cierre de sesión -->
+                <a href="./login.html" id="login-button" class="auth-button">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                </a>
+                <button id="logout-button" class="auth-button" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </button>
+            </div>
+        </div>
+    
+        <div class="main-header-content">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="/images/logo.svg" alt="Flores San Valentín" class="logo">
+                    <div class="brand-text">
+                        <h1 data-i18n="welcome">Flores San Valentín</h1>
+                        <p data-i18n="slogan">Arreglos florales únicos y personalizados</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="./login.html" class="action-button">
+                        <i class="fas fa-gift"></i>
+                        <span data-i18n="special_order">Pedido Especial</span>
+                    </a>
+                    <a href="./login.html" class="action-button primary">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span data-i18n="buy_now">Comprar Ahora</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Espacio reservado para el menú sticky -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#home" data-i18n="home">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#catalogo" data-i18n="catalog">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#galeria" data-i18n="gallery">Galería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ubicacion" data-i18n="location">Ubicación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto" data-i18n="contact">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-i18n="about_us">Sobre Nosotros</h3>
+                <p data-i18n="about_us_desc">Somos especialistas en arreglos florales únicos y personalizados. Con más de 15 años de experiencia llevando belleza y color a momentos especiales.</p>                
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-i18n="opening_hours">Horario de Atención</h3>
+                <ul class="footer-hours">
+                    <li data-i18n="monday_friday">Lunes a Viernes: 9:00 - 20:00</li>
+                    <li data-i18n="saturday">Sábados: 9:00 - 18:00</li>
+                    <li data-i18n="sunday">Domingos: 10:00 - 14:00</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-i18n="contact">Contacto</h3>
+                <ul class="footer-contact">
+                    <li><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Ciudad</li>
+                    <li><i class="fas fa-phone"></i> +57 300 123 4567</li>
+                    <li><i class="fas fa-envelope"></i> info@floresvalentin.com</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-i18n="follow_us">Síguenos</h3>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Flores para San Valentín. <span data-i18n="all_rights_reserved">Todos los derechos reservados.</span></p>
+            <div class="footer-links">
+                <a href="#" data-i18n="privacy_policy">Política de Privacidad</a>
+                <a href="#" data-i18n="terms_conditions">Términos y Condiciones</a>
+                <a href="#" data-i18n="cookie_policy">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+    
+    <button id="float-button">
+        <i class="fab fa-whatsapp"></i>
+    </button>
+    
+    <script type="module" src="/src/scripts/main.js"></script>
+    <script type="module" src="/src/scripts/theme.js"></script>
+</body>
+</html>

@@ -40,10 +40,10 @@ async function updateUIBasedOnSession() {
             // Asignar los nuevos href antes de reemplazar
             if (newButton.textContent.trim().includes('Pedido Especial') || 
                 newButton.getAttribute('data-i18n') === 'special_order') {
-                newButton.href = './pedidoEspecial.html';
+                newButton.href = './specialOrder.html';
             } else if (newButton.textContent.trim().includes('Comprar Ahora') || 
                       newButton.getAttribute('data-i18n') === 'buy_now') {
-                newButton.href = './canasta.html';
+                newButton.href = './shoppingCart.html';
             }
             // Reemplazar el botón original con el nuevo
             button.parentNode.replaceChild(newButton, button);
