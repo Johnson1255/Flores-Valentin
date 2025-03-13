@@ -6,7 +6,7 @@ export async function protectAndRedirect(targetUrl) {
     
     if (!session) {
         // Si no hay sesión, redirigir al login con URL de retorno
-        window.location.href = `/Plataformas-Taller1/login.html?returnUrl=${encodeURIComponent(targetUrl)}`;
+        window.location.href = `/Flores-Valentin/login.html?returnUrl=${encodeURIComponent(targetUrl)}`;
         return false;
     }
     
