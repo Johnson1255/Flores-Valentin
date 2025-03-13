@@ -21,6 +21,7 @@ class I18nManager {
       // General
       'welcome': 'Bienvenido a Flores San Valentín',
       'slogan': 'Arreglos florales únicos y personalizados',
+      'shopcart': 'Mi Carrito de Compras',
       
       // Navegación
       'home': 'Inicio',
@@ -111,6 +112,7 @@ class I18nManager {
       // General
       'welcome': 'Welcome to Valentine\'s Flowers',
       'slogan': 'Unique and personalized floral arrangements',
+      'shopcart': 'My Shopping Cart',
       
       // Navegación
       'home': 'Home',

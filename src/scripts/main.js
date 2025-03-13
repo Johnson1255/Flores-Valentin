@@ -43,11 +43,31 @@ async function updateUIBasedOnSession() {
                 newButton.href = './specialOrder.html';
             } else if (newButton.textContent.trim().includes('Comprar Ahora') || 
                       newButton.getAttribute('data-i18n') === 'buy_now') {
+                // Cambiar el texto a "Mi Carrito"
+                const iconElement = newButton.querySelector('i');
+                // Mantenemos el ícono pero cambiamos el texto
+                if (iconElement) {
+                    // Limpiamos el contenido y añadimos el ícono y el nuevo texto
+                    newButton.innerHTML = '';
+                    newButton.appendChild(iconElement);
+                    
+                    // Crear un nuevo span con atributo data-i18n actualizado
+                    const span = document.createElement('span');
+                    span.setAttribute('data-i18n', 'shopcart');
+                    span.textContent = 'Mi Carrito';
+                    newButton.appendChild(span);
+                } else {
+                    newButton.textContent = 'Mi Carrito';
+                    newButton.setAttribute('data-i18n', 'shopcart');
+                }
                 newButton.href = './shoppingCart.html';
             }
             // Reemplazar el botón original con el nuevo
             button.parentNode.replaceChild(newButton, button);
         });
+        
+        // Actualizar las traducciones después de modificar el DOM
+        i18n.updatePageContent();
     } else {
         // Usuario sin sesión
         if (loginButton) loginButton.style.display = 'block';
