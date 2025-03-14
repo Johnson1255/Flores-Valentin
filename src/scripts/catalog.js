@@ -1,6 +1,5 @@
 import { supabase } from './supabase.js';
-import { protectRoute } from './protectedRoute.js';
-import axios from 'axios';
+import { getCurrentUser, getSession } from './auth.js';
 
 // Elementos del DOM
 const flowersContainer = document.getElementById('flowers-container');
@@ -14,79 +13,129 @@ const saveFlowerButton = document.getElementById('save-flower-button');
 // Variables globales
 let currentFlowers = [];
 let editingFlowerId = null;
+let isAdmin = false;
 
-// Comprobar autenticación
+// Comprobar autenticación al cargar la página
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Proteger esta ruta - solo usuarios autenticados
-        const session = await protectRoute();
+        // Cargar datos iniciales - permitido para todos
+        await loadFlowers();
+        
+        // Verificar si hay sesión y comprobar rol
+        const session = await getSession();
         
         if (session) {
-            // Cargar datos iniciales
-            await loadFlowers();
-            
-            // Configurar event listeners
-            setupEventListeners();
+            // Obtener perfil del usuario
+            const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', session.user.id)
+                .single();
+                
+            if (!error && profile) {
+                isAdmin = profile.role === 'admin';
+                
+                // Mostrar u ocultar controles de administrador
+                toggleAdminControls(isAdmin);
+            }
+        } else {
+            // No hay sesión, ocultar controles de administrador
+            toggleAdminControls(false);
         }
+        
+        // Configurar event listeners
+        setupEventListeners();
+        
     } catch (error) {
         console.error('Error al inicializar la página:', error);
     }
 });
 
-// Configurar event listeners
-function setupEventListeners() {
-    // Botón de búsqueda
-    searchButton.addEventListener('click', () => {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        filterFlowers(searchTerm);
-    });
+// Mostrar u ocultar controles de administrador
+function toggleAdminControls(show) {
+    // Botón de agregar flores
+    if (addFlowerButton) {
+        addFlowerButton.style.display = show ? 'block' : 'none';
+    }
     
-    // Búsqueda mientras se escribe
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        filterFlowers(searchTerm);
-    });
-    
-    // Botón para agregar flor
-    addFlowerButton.addEventListener('click', () => {
-        // Resetear el formulario y abrir el modal para agregar
-        flowerForm.reset();
-        document.getElementById('modalTitle').textContent = 'Agregar Nueva Flor';
-        editingFlowerId = null;
-        flowerModal.show();
-    });
-    
-    // Botón para guardar flor
-    saveFlowerButton.addEventListener('click', async () => {
-        // Validar formulario
-        if (!flowerForm.checkValidity()) {
-            flowerForm.reportValidity();
-            return;
-        }
-        
-        const flowerData = {
-            name: document.getElementById('flower-name').value,
-            description: document.getElementById('flower-description').value,
-            price: parseFloat(document.getElementById('flower-price').value),
-            category: document.getElementById('flower-category').value,
-            image_url: document.getElementById('flower-image').value,
-            stock: parseInt(document.getElementById('flower-stock').value) || 0
-        };
-        
-        if (editingFlowerId) {
-            // Actualizar flor existente
-            await updateFlower(editingFlowerId, flowerData);
-        } else {
-            // Agregar nueva flor
-            await addFlower(flowerData);
-        }
-        
-        flowerModal.hide();
-        await loadFlowers(); // Recargar la lista
+    // Otros elementos marcados como admin-only
+    document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = show ? 'block' : 'none';
     });
 }
 
-// Cargar flores desde Supabase
+// Configurar event listeners
+function setupEventListeners() {
+    // Botón de búsqueda
+    if (searchButton) {
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            filterFlowers(searchTerm);
+        });
+    }
+    
+    // Búsqueda mientras se escribe
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            filterFlowers(searchTerm);
+        });
+    }
+    
+    // Botón para agregar flor (solo admin)
+    if (addFlowerButton) {
+        addFlowerButton.addEventListener('click', () => {
+            if (!isAdmin) {
+                alert('Solo los administradores pueden agregar flores');
+                return;
+            }
+            
+            // Resetear el formulario y abrir el modal para agregar
+            flowerForm.reset();
+            document.getElementById('modalTitle').textContent = 'Agregar Nueva Flor';
+            editingFlowerId = null;
+            flowerModal.show();
+        });
+    }
+    
+    // Botón para guardar flor
+    if (saveFlowerButton) {
+        saveFlowerButton.addEventListener('click', async () => {
+            if (!isAdmin) {
+                alert('Solo los administradores pueden modificar flores');
+                return;
+            }
+            
+            // Validar formulario
+            if (!flowerForm.checkValidity()) {
+                flowerForm.reportValidity();
+                return;
+            }
+            
+            const flowerData = {
+                name: document.getElementById('flower-name').value,
+                description: document.getElementById('flower-description').value,
+                price: parseFloat(document.getElementById('flower-price').value),
+                category: document.getElementById('flower-category').value,
+                image_url: document.getElementById('flower-image').value,
+                stock: parseInt(document.getElementById('flower-stock').value) || 0
+            };
+            
+            if (editingFlowerId) {
+                // Actualizar flor existente
+                await updateFlower(editingFlowerId, flowerData);
+            } else {
+                // Agregar nueva flor
+                await addFlower(flowerData);
+            }
+            
+            flowerModal.hide();
+            await loadFlowers(); // Recargar la lista
+        });
+    }
+}
+
+// Cargar flores desde Supabase - Visible para todos
 async function loadFlowers() {
     try {
         const { data, error } = await supabase
@@ -122,6 +171,8 @@ function filterFlowers(searchTerm) {
 
 // Renderizar flores en el contenedor
 function renderFlowers(flowers) {
+    if (!flowersContainer) return;
+    
     if (flowers.length === 0) {
         flowersContainer.innerHTML = '<p class="col-12 text-center">No se encontraron flores.</p>';
         return;
@@ -138,7 +189,7 @@ function renderFlowers(flowers) {
                     <p class="card-text"><strong>$${flower.price.toFixed(2)}</strong></p>
                     <p class="card-text"><small class="text-muted">En stock: ${flower.stock}</small></p>
                 </div>
-                <div class="card-footer bg-transparent d-flex justify-content-between">
+                <div class="card-footer bg-transparent d-flex justify-content-between admin-only" style="display: none;">
                     <button class="btn btn-sm btn-outline-primary edit-flower" data-id="${flower.id}">
                         <i class="fas fa-edit"></i> Editar
                     </button>
@@ -150,26 +201,38 @@ function renderFlowers(flowers) {
         </div>
     `).join('');
     
-    // Agregar event listeners a los botones de editar y eliminar
-    document.querySelectorAll('.edit-flower').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
-            editFlower(id);
-        });
+    // Actualizar la visibilidad de los controles de administrador
+    document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = isAdmin ? 'flex' : 'none';
     });
     
-    document.querySelectorAll('.delete-flower').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const id = e.currentTarget.dataset.id;
-            if (confirm('¿Estás seguro que deseas eliminar esta flor?')) {
-                deleteFlower(id);
-            }
+    // Agregar event listeners a los botones de editar y eliminar (solo si es admin)
+    if (isAdmin) {
+        document.querySelectorAll('.edit-flower').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                editFlower(id);
+            });
         });
-    });
+        
+        document.querySelectorAll('.delete-flower').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                if (confirm('¿Estás seguro que deseas eliminar esta flor?')) {
+                    deleteFlower(id);
+                }
+            });
+        });
+    }
 }
 
-// Editar una flor
+// Editar una flor (solo admin)
 async function editFlower(id) {
+    if (!isAdmin) {
+        alert('Solo los administradores pueden editar flores');
+        return;
+    }
+    
     const flower = currentFlowers.find(f => f.id === id);
     if (!flower) return;
     
@@ -189,8 +252,13 @@ async function editFlower(id) {
     flowerModal.show();
 }
 
-// Agregar una nueva flor
+// Agregar una nueva flor (solo admin)
 async function addFlower(flowerData) {
+    if (!isAdmin) {
+        alert('Solo los administradores pueden agregar flores');
+        return;
+    }
+    
     try {
         const { data, error } = await supabase
             .from('flowers')
@@ -207,8 +275,13 @@ async function addFlower(flowerData) {
     }
 }
 
-// Actualizar una flor existente
+// Actualizar una flor existente (solo admin)
 async function updateFlower(id, flowerData) {
+    if (!isAdmin) {
+        alert('Solo los administradores pueden actualizar flores');
+        return;
+    }
+    
     try {
         const { data, error } = await supabase
             .from('flowers')
@@ -226,8 +299,13 @@ async function updateFlower(id, flowerData) {
     }
 }
 
-// Eliminar una flor
+// Eliminar una flor (solo admin)
 async function deleteFlower(id) {
+    if (!isAdmin) {
+        alert('Solo los administradores pueden eliminar flores');
+        return;
+    }
+    
     try {
         const { error } = await supabase
             .from('flowers')
@@ -241,37 +319,5 @@ async function deleteFlower(id) {
     } catch (error) {
         console.error('Error al eliminar flor:', error);
         alert(`Error al eliminar flor: ${error.message}`);
-    }
-}
-
-// Ejemplo de cómo usar Axios para cargar datos externos
-async function loadSampleFlowersWithAxios() {
-    try {
-        // Esta función es un ejemplo de cómo poder usar Axios para cargar datos externos
-        // y añadirlos a la base de datos de Supabase
-        const response = await axios.get('https://ejemplo-api-flores.com/flores');
-        const externalFlowers = response.data;
-        
-        // Convertir el formato de la API externa al formato de la tabla
-        const formattedFlowers = externalFlowers.map(flower => ({
-            name: flower.nombre,
-            description: flower.descripcion,
-            price: flower.precio,
-            category: flower.categoria,
-            image_url: flower.imagen,
-            stock: flower.existencias
-        }));
-        
-        // Insertar en Supabase
-        const { data, error } = await supabase
-            .from('flowers')
-            .insert(formattedFlowers)
-            .select();
-            
-        if (error) throw error;
-        
-        console.log('Flores cargadas desde API externa:', data);
-    } catch (error) {
-        console.error('Error al cargar flores desde API externa:', error);
     }
 }
