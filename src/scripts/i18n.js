@@ -33,6 +33,8 @@ class I18nManager {
       // Botones de acción
       'special_order': 'Pedido Especial',
       'buy_now': 'Comprar Ahora',
+      'auth_login': 'Iniciar Sesión',
+      'auth_logout': 'Cerrar Sesión',
       
       // Contacto y ubicación
       'phone': 'Teléfono',
@@ -124,6 +126,8 @@ class I18nManager {
       // Botones de acción
       'special_order': 'Special Order',
       'buy_now': 'Buy Now',
+      'auth_login': 'Sign In',
+      'auth_logout': 'Log Out',
       
       // Contacto y ubicación
       'phone': 'Phone',
