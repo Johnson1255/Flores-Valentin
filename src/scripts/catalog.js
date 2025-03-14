@@ -174,28 +174,65 @@ function renderFlowers(flowers) {
     if (!flowersContainer) return;
     
     if (flowers.length === 0) {
-        flowersContainer.innerHTML = '<p class="col-12 text-center">No se encontraron flores.</p>';
+        flowersContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No se encontraron flores que coincidan con tu búsqueda.</p></div>';
         return;
     }
     
+    // Actualizar contador de resultados
+    const resultsCount = document.getElementById('results-count');
+    if (resultsCount) {
+        resultsCount.textContent = `Mostrando ${flowers.length} productos`;
+    }
+    
     flowersContainer.innerHTML = flowers.map(flower => `
-        <div class="col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
-                <img src="${flower.image_url || '/images/default-flower.jpg'}" class="card-img-top" alt="${flower.name}">
-                <div class="card-body">
-                    <h5 class="card-title">${flower.name}</h5>
-                    <p class="card-text">${flower.description || ''}</p>
-                    <p class="card-text"><small class="text-muted">Categoría: ${flower.category || 'General'}</small></p>
-                    <p class="card-text"><strong>$${flower.price.toFixed(2)}</strong></p>
-                    <p class="card-text"><small class="text-muted">En stock: ${flower.stock}</small></p>
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 flower-card">
+                <div class="card-img-container">
+                    <img src="${flower.image_url || '/images/default-flower.jpg'}" 
+                         class="card-img-top" 
+                         alt="${flower.name}"
+                         onerror="this.src='/images/default-flower.jpg'">
+                    <div class="card-img-overlay d-flex justify-content-end align-items-start">
+                        <button class="btn btn-sm btn-light rounded-circle shadow-sm quick-view-btn" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#quickViewModal" 
+                                data-id="${flower.id}" 
+                                title="Vista rápida">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="card-footer bg-transparent d-flex justify-content-between admin-only" style="display: none;">
-                    <button class="btn btn-sm btn-outline-primary edit-flower" data-id="${flower.id}">
-                        <i class="fas fa-edit"></i> Editar
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger delete-flower" data-id="${flower.id}">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </button>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${flower.name}</h5>
+                    <p class="card-text small text-muted mb-2">
+                        <span class="badge bg-light text-dark">${flower.category || 'General'}</span>
+                    </p>
+                    <p class="card-text text-truncate small mb-2">${flower.description || 'Sin descripción'}</p>
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-text mb-0"><strong class="text-primary">$${flower.price.toFixed(2)}</strong></p>
+                            <span class="badge ${flower.stock > 0 ? 'bg-success' : 'bg-danger'} text-white">
+                                ${flower.stock > 0 ? 'En stock' : 'Agotado'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-sm add-to-cart" ${flower.stock <= 0 ? 'disabled' : ''}>
+                            <i class="fas fa-shopping-cart me-1"></i> Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent admin-only" style="display: none;">
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-outline-primary edit-flower" data-id="${flower.id}">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-flower" data-id="${flower.id}">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -224,6 +261,48 @@ function renderFlowers(flowers) {
             });
         });
     }
+    
+    // Agregar event listener para los botónes de vista rápida
+    document.querySelectorAll('.quick-view-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const id = e.currentTarget.dataset.id;
+            showQuickView(id);
+        });
+    });
+    
+    // Agregar event listener para los botones de añadir al carrito
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const card = e.currentTarget.closest('.card');
+            const id = card.querySelector('[data-id]').dataset.id;
+            addToCart(id);
+        });
+    });
+}
+
+// Función para mostrar la vista rápida
+function showQuickView(id) {
+    const flower = currentFlowers.find(f => f.id === id);
+    if (!flower) return;
+    
+    // Actualizar los datos en el modal
+    document.getElementById('quickViewName').textContent = flower.name;
+    document.getElementById('quickViewDescription').textContent = flower.description || 'Sin descripción';
+    document.getElementById('quickViewCategory').textContent = flower.category || 'General';
+    document.getElementById('quickViewPrice').textContent = `$${flower.price.toFixed(2)}`;
+    document.getElementById('quickViewStock').textContent = flower.stock;
+    document.getElementById('quickViewImage').src = flower.image_url || '/images/default-flower.jpg';
+    document.getElementById('quickViewImage').alt = flower.name;
+}
+
+// Función para añadir al carrito (implementación básica)
+function addToCart(id) {
+    const flower = currentFlowers.find(f => f.id === id);
+    if (!flower) return;
+    
+    // Aquí implementarías la lógica para añadir al carrito
+    // Por ahora, solo mostramos un mensaje
+    alert(`${flower.name} añadido al carrito`);
 }
 
 // Editar una flor (solo admin)
@@ -319,5 +398,38 @@ async function deleteFlower(id) {
     } catch (error) {
         console.error('Error al eliminar flor:', error);
         alert(`Error al eliminar flor: ${error.message}`);
+    }
+}
+
+// Elementos del DOM para el toggle de vista
+const viewGridBtn = document.getElementById('view-grid');
+const viewListBtn = document.getElementById('view-list');
+
+// Configurar event listeners para los botones de vista
+if (viewGridBtn && viewListBtn) {
+    viewGridBtn.addEventListener('click', () => {
+        flowersContainer.classList.remove('list-view');
+        localStorage.setItem('viewMode', 'grid');
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+    });
+    
+    viewListBtn.addEventListener('click', () => {
+        flowersContainer.classList.add('list-view');
+        localStorage.setItem('viewMode', 'list');
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
+    });
+    
+    // Aplicar el modo de vista guardado
+    const savedViewMode = localStorage.getItem('viewMode');
+    if (savedViewMode === 'list') {
+        flowersContainer.classList.add('list-view');
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
+    } else {
+        flowersContainer.classList.remove('list-view');
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
     }
 }
