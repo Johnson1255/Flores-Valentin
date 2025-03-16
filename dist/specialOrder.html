@@ -15,9 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script type="module" crossorigin src="/Flores-Valentin/assets/main-DPeSvp_q.js"></script>
-  <link rel="modulepreload" crossorigin href="/Flores-Valentin/assets/theme-bU7hyL3V.js">
-  <link rel="modulepreload" crossorigin href="/Flores-Valentin/assets/main-Bs780hrD.js">
+  <script type="module" crossorigin src="/Flores-Valentin/assets/theme-bU7hyL3V.js"></script>
+  <script type="module" crossorigin src="/Flores-Valentin/assets/main-Bs780hrD.js"></script>
+  <script type="module" crossorigin src="/Flores-Valentin/assets/checkAuth-C3cDY9ET.js"></script>
   <link rel="stylesheet" crossorigin href="/Flores-Valentin/assets/main-DLpyAQg2.css">
 </head>
 <body>
@@ -57,10 +57,10 @@
                 </div>
                 <!-- Botones de inicio/cierre de sesión -->
                 <a href="./login.html" id="login-button" class="auth-button">
-                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="auth_login">Iniciar sesión</span>
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
                 </a>
                 <button id="logout-button" class="auth-button" style="display: none;">
-                    <i class="fas fa-sign-out-alt"></i> <span data-i18n="auth_logout">Cerrar sesión</span>
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </div>
         </div>
@@ -113,140 +113,7 @@
             </div>
         </div>
     </nav>
-    
-    <section id="home">
-        <div class="banner-container">
-            <h1 class="banner-title">Flores para San Valentín</h1>
-            <img class="banner" src="/Flores-Valentin/images/banner1.jpg" alt="Flores 1">
-            <img class="banner" src="/Flores-Valentin/images/banner2.jpg" alt="Flores 2">
-            <img class="banner" src="/Flores-Valentin/images/banner3.jpg" alt="Flores 3">
-        </div>
-    </section>
-    
-    <section id="catalogo" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4" data-i18n="our_catalog">Nuestro Catálogo</h2>
-            <div class="row g-4">
-                <!-- Categoría 1 -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="/Flores-Valentin/images/rosas-rojas.jpg" class="card-img-top" alt="Rosas Rojas">
-                        <div class="card-body">
-                            <h5 class="card-title" data-i18n="red_roses">Rosas Rojas</h5>
-                            <p class="card-text" data-i18n="red_roses_desc">Ramos elegantes de rosas rojas, perfectos para expresar amor y pasión.</p>
-                            <p class="card-text"><small class="text-muted"><span data-i18n="from">Desde</span> $50.000</small></p>
-                            <a href="./catalog.html" class="btn btn-primary" data-i18n="view_details">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Categoría 2 -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="/Flores-Valentin/images/tulipanes.jpg" class="card-img-top" alt="Tulipanes">
-                        <div class="card-body">
-                            <h5 class="card-title" data-i18n="tulips">Tulipanes</h5>
-                            <p class="card-text" data-i18n="tulips_desc">Arreglos coloridos de tulipanes holandeses frescos.</p>
-                            <p class="card-text"><small class="text-muted"><span data-i18n="from">Desde</span> $45.000</small></p>
-                            <a href="./catalog.html" class="btn btn-primary" data-i18n="view_details">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Categoría 3 -->
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="/Flores-Valentin/images/orquideas.jpg" class="card-img-top" alt="Orquídeas">
-                        <div class="card-body">
-                            <h5 class="card-title" data-i18n="orchids">Orquídeas</h5>
-                            <p class="card-text" data-i18n="orchids_desc">Elegantes arreglos de orquídeas para ocasiones especiales.</p>
-                            <p class="card-text"><small class="text-muted"><span data-i18n="from">Desde</span> $75.000</small></p>
-                            <a href="./catalog.html" class="btn btn-primary" data-i18n="view_details">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="galeria">
-        <h2 data-i18n="image_gallery">Galería de Imágenes</h2>
-        <div class="gallery">
-            <img src="/Flores-Valentin/images/flor1.jpg" alt="Rosas">
-            <img src="/Flores-Valentin/images/flor2.jpg" alt="Tulipanes">
-            <img src="/Flores-Valentin/images/flor3.jpg" alt="Lirios">
-
-            <img src="/Flores-Valentin/images/flor4.jpg" alt="Orquídeas">
-            <img src="/Flores-Valentin/images/flor5.jpg" alt="Girasoles">
-            <img src="/Flores-Valentin/images/flor6.jpg" alt="Claveles">
-        </div>
-    </section>
-    
-    <section id="ubicacion" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4" data-i18n="our_location">Nuestra Ubicación</h2>
-            <div class="location-container">
-                <!-- Panel de información -->
-                <div class="location-info-panel">
-                    <div class="info-card">
-                        <h3><i class="fas fa-map-marked-alt"></i> <span data-i18n="visit_us">Visítanos</span></h3>
-                        <div class="info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <strong data-i18n="address">Dirección:</strong>
-                                <p>Av. Principal 123, Ciudad</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <strong data-i18n="phone">Teléfono:</strong>
-                                <p>+57 300 123 4567</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-clock"></i>
-                            <div>
-                                <strong data-i18n="opening_hours">Horario de atención:</strong>
-                                <p data-i18n="monday_friday">Lunes a Viernes: 9:00 - 20:00</p>
-                                <p data-i18n="saturday">Sábados: 9:00 - 18:00</p>
-                                <p data-i18n="sunday">Domingos: 10:00 - 14:00</p>
-                            </div>
-                        </div>
-                        <a href="#" class="btn btn-primary mt-3">
-                            <i class="fas fa-directions"></i> <span data-i18n="directions">Cómo llegar</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Contenedor del mapa -->
-                <div class="map-wrapper">
-                    <div id="map"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="video">
-        <h2>Flores para San Valentín</h2>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/rrl4u6xIJUs?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </section>
-    
-    
-    <section id="contacto">
-        <h2 data-i18n="contact">Contacto</h2>
-        <form>
-            <label for="name" data-i18n="name">Nombre:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email" data-i18n="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="message" data-i18n="message">Mensaje:</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <button type="submit" data-i18n="send">Enviar</button>
-        </form>
-    </section>
-    
     <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-section">
