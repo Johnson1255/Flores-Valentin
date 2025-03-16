@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Flores - Flores San Valentín</title>
-    <link rel="stylesheet" href="./src/styles/main.pcss">
     <link rel="stylesheet" href="./src/styles/catalog.pcss">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
@@ -92,16 +91,11 @@
         </div>
     </nav>
     
-    <div class="container mt-4">
+    <div class="container mt-5">
         <div class="row mb-4">
-            <div class="col-md-6">
-                <h1 class="h2">Catálogo de Flores</h1>
-                <p class="text-muted">Explora nuestra colección de arreglos florales para toda ocasión</p>
-            </div>
-            <div class="col-md-6 text-end">
-                <button class="btn btn-success admin-only" id="add-flower-button" style="display: none;">
-                    <i class="fas fa-plus"></i> Agregar Nueva Flor
-                </button>
+            <div class="col-12">
+                <h1 class="text-center mb-4">Catálogo de Flores</h1>
+                <p class="text-center text-muted">Explora nuestra colección de arreglos florales para toda ocasión</p>
             </div>
         </div>
         
@@ -142,7 +136,7 @@
         
         <!-- Navegación por categorías -->
         <div class="category-tabs mb-4" id="category-tabs">
-            <ul class="nav nav-pills flex-nowrap overflow-auto pb-2">
+            <ul class="nav nav-pills">
                 <li class="nav-item">
                     <button class="nav-link active" data-category="">Todas</button>
                 </li>
@@ -150,16 +144,21 @@
             </ul>
         </div>
         
-        <!-- Estado de los resultados -->
+        <!-- Estado de los resultados y vista -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div id="results-count" class="text-muted">Mostrando 0 productos</div>
-            <div class="btn-group" role="group">
-                <button class="btn btn-outline-secondary btn-sm" id="view-grid">
-                    <i class="fas fa-th-large"></i>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-primary btn-sm me-2 admin-only" id="add-flower-button" style="display: none;">
+                    <i class="fas fa-plus"></i> Agregar Nueva Flor
                 </button>
-                <button class="btn btn-outline-secondary btn-sm" id="view-list">
-                    <i class="fas fa-list"></i>
-                </button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-outline-secondary btn-sm active" id="view-grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" id="view-list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
             </div>
         </div>
         

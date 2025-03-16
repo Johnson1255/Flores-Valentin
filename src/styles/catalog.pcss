@@ -1,96 +1,130 @@
 /* Estilos para las tarjetas de productos */
-.flower-card {
+.product-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,0,0,0.125);
     overflow: hidden;
 }
 
-.flower-card:hover {
+.product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.card-img-container {
-    position: relative;
-    overflow: hidden;
-    height: 200px;
-}
-
-.card-img-top {
-    width: 100%;
-    height: 100%;
+.product-card .card-img-top {
+    height: 220px;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
 }
 
-.flower-card:hover .card-img-top {
+.product-card:hover .card-img-top {
     transform: scale(1.05);
 }
 
-.quick-view-btn {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.flower-card:hover .quick-view-btn {
-    opacity: 1;
-}
-
-.card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
+/* Estilos para la vista de lista */
+.product-card-list {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.card-body {
-    padding: 1rem;
+.product-card-list:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.card-footer {
-    padding: 0.75rem 1rem;
+.product-card-list .img-fluid {
+    object-fit: cover;
+    height: 100%;
+    transition: transform 0.5s ease;
+}
+
+.product-card-list:hover .img-fluid {
+    transform: scale(1.05);
+}
+
+/* Estilos para las pestañas de categoría */
+.category-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.category-tabs .nav {
+    display: inline-flex;
+    min-width: 100%;
+}
+
+.category-tabs .nav-link {
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    color: var(--bs-body-color);
     background-color: transparent;
+    border: 1px solid #dee2e6;
 }
 
-.badge {
-    font-weight: 500;
-    padding: 0.35em 0.65em;
+.category-tabs .nav-link:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
 }
 
-/* Estilos para la vista en lista (puedes implementar esto más adelante) */
-.list-view .flower-card {
-    flex-direction: row;
-    height: auto;
+.category-tabs .nav-link.active {
+    background-color: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
 }
 
-.list-view .card-img-container {
-    width: 150px;
-    height: 150px;
+/* Estilos para el buscador y filtros */
+.card.shadow-sm {
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.list-view .card-body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+/* Estilos para la paginación */
+.pagination .page-link {
+    color: var(--bs-primary);
+    border-radius: 0.25rem;
+    margin: 0 0.2rem;
 }
 
-/* Estilos para el tema oscuro */
-[data-theme="dark"] .flower-card {
-    background-color: #2d3748;
-    border-color: #4a5568;
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
 }
 
-[data-theme="dark"] .card-title {
-    color: #e2e8f0;
+/* Animaciones para los elementos cargados */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-[data-theme="dark"] .text-muted {
-    color: #a0aec0 !important;
+.col-md-4, .col-12 {
+    animation: fadeIn 0.5s ease forwards;
 }
 
-[data-theme="dark"] .badge.bg-light {
-    background-color: #4a5568 !important;
-    color: #e2e8f0 !important;
+/* Mejoras visuales para botones */
+.btn-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--bs-primary-rgb), 0.3);
+}
+
+/* Estilos para la vista rápida */
+#quickViewModal .modal-content {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+#quickViewModal .modal-body {
+    padding: 1.5rem;
+}
+
+#quickViewImage {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
