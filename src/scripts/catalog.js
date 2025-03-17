@@ -47,18 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Función para cargar productos (en producción vendría de una API)
+    // Función para cargar productos desde Supabase
     const loadProducts = async () => {
         try {
-            // En producción, esta sería una llamada a la API para obtener los productos de Supabase
-            // const response = await fetch('/api/products');
-            // const data = await response.json();
+            flowersContainer.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2">Cargando productos...</p>
+                </div>
+            `;
+
+            const { supabase } = await import('./supabase.js');
+
+            // Obtener productos de Supabase
+            const { data, error } = await supabase
+                .from('products')  // Asegúrate de que este es el nombre correcto de tu tabla
+                .select('*')       // Seleccionar todos los campos
+                .order('name');    // Ordenar por nombre
             
-            // Para la demostración, generamos 100 productos de muestra
-            products = generateSampleProducts(100);
+            if (error) throw error;
+            
+            products = data || [];
             
             // Recopilar categorías únicas
-            products.forEach(product => categories.add(product.category));
+            categories = new Set(products.map(product => product.category));
             
             // Llenar selectores de categoría
             populateCategorySelectors();
@@ -68,11 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Configurar la vista (grid o list)
             if (currentView === 'list') {
-                currentView = 'list';
                 viewListBtn.classList.add('active');
                 viewGridBtn.classList.remove('active');
             } else {
-                currentView = 'grid';
                 viewGridBtn.classList.add('active');
                 viewListBtn.classList.remove('active');
             }
@@ -83,47 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error cargando productos:', error);
             flowersContainer.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error al cargar los productos. Intente nuevamente.</p></div>';
         }
-    };
-
-    // Generar productos de muestra para la demostración
-    const generateSampleProducts = (count) => {
-        const sampleProducts = [];
-        const categories = ['Rosas', 'Tulipanes', 'Orquídeas', 'Girasoles', 'Lirios', 'Claveles', 'Margaritas', 'Crisantemos'];
-        const imageUrls = [
-            './images/rosas-rojas.jpg', 
-            './images/tulipanes.jpg', 
-            './images/orquideas.jpg', 
-            './images/flor5.jpg', 
-            './images/flor3.jpg', 
-            './images/flor1.jpg'
-        ];
-        
-        const descriptions = [
-            "Hermoso arreglo perfecto para expresar amor y pasión.",
-            "Frescas flores importadas en variados colores vibrantes.",
-            "Elegante arreglo para ocasiones especiales y celebraciones.",
-            "Flores radiantes que alegran cualquier espacio del hogar.",
-            "Símbolo de pureza y elegancia, ideales como regalo.",
-            "Arreglo mixto con diferentes colores para toda ocasión."
-        ];
-        
-        for (let i = 1; i <= count; i++) {
-            const categoryIndex = Math.floor(Math.random() * categories.length);
-            const imageIndex = Math.floor(Math.random() * imageUrls.length);
-            const descIndex = Math.floor(Math.random() * descriptions.length);
-            
-            sampleProducts.push({
-                id: i,
-                name: `${categories[categoryIndex]} ${i <= 20 ? "Premium" : "Clásicas"} ${i}`,
-                description: descriptions[descIndex],
-                price: Math.floor(Math.random() * 50000) + 20000,
-                category: categories[categoryIndex],
-                image: imageUrls[imageIndex],
-                stock: Math.floor(Math.random() * 30) + 5
-            });
-        }
-        
-        return sampleProducts;
     };
 
     // Función para poblar selectores de categoría
