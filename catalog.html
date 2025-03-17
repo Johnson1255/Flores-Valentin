@@ -91,178 +91,149 @@
         </div>
     </nav>
     
-    <div class="container mt-5">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h1 class="text-center mb-4">Catálogo de Flores</h1>
-                <p class="text-center text-muted">Explora nuestra colección de arreglos florales para toda ocasión</p>
-            </div>
+    <!-- Contenedor de Autenticación - se muestra solo si no hay sesión -->
+    <div id="auth-container" style="display: none;">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                </div>
+            </form>
         </div>
-        
-        <!-- Barra de filtros y búsqueda -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input type="text" id="search-input" class="form-control" placeholder="Buscar por nombre...">
-                            <button class="btn btn-primary" id="search-button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+    </div>
+
+    <!-- Contenedor del Catálogo - se muestra solo si hay sesión -->
+    <div id="catalog-container" style="display: none;">
+        <!-- Header del usuario autenticado -->
+        <div class="user-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">Flores San Valentín</h5>
                     </div>
-                    <div class="col-md-3">
-                        <select id="category-filter" class="form-select">
-                            <option value="">Todas las categorías</option>
-                            <!-- Se llenará dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select id="sort-by" class="form-select">
-                            <option value="name-asc">Nombre (A-Z)</option>
-                            <option value="name-desc">Nombre (Z-A)</option>
-                            <option value="price-asc">Precio (Menor a Mayor)</option>
-                            <option value="price-desc">Precio (Mayor a Menor)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button id="filter-reset" class="btn btn-outline-secondary w-100">
-                            <i class="fas fa-redo"></i> Resetear
+                    <div>
+                        <button id="logout-button" class="btn btn-outline-danger btn-sm btn-logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Navegación por categorías -->
-        <div class="category-tabs mb-4" id="category-tabs">
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <button class="nav-link active" data-category="">Todas</button>
-                </li>
-                <!-- Se llenará dinámicamente -->
-            </ul>
-        </div>
-        
-        <!-- Estado de los resultados y vista -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div id="results-count" class="text-muted">Mostrando 0 productos</div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-primary btn-sm me-2 admin-only" id="add-flower-button" style="display: none;">
-                    <i class="fas fa-plus"></i> Agregar Nueva Flor
-                </button>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-secondary btn-sm active" id="view-grid">
-                        <i class="fas fa-th-large"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm" id="view-list">
-                        <i class="fas fa-list"></i>
+
+        <!-- Contenido Principal -->
+        <div class="container py-4">
+            <header class="pb-3 mb-4 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>Catálogo de Flores</h1>
+                    <div class="btn-group" role="group" aria-label="Cambiar vista">
+                        <button id="view-grid" class="btn btn-outline-primary active" data-bs-toggle="tooltip" title="Vista de cuadrícula">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button id="view-list" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Vista de lista">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tabs de categorías -->
+            <div id="category-tabs" class="mb-4 category-tabs">
+                <ul class="nav nav-pills flex-nowrap overflow-auto pb-2"></ul>
+            </div>
+
+            <!-- Filters -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="input-group">
+                        <input type="text" id="search-input" class="form-control" placeholder="Buscar flores...">
+                        <button class="btn btn-outline-secondary" type="button" id="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <select id="category-filter" class="form-select">
+                        <option value="">Todas las categorías</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <select id="sort-by" class="form-select">
+                        <option value="name-asc">Nombre (A-Z)</option>
+                        <option value="name-desc">Nombre (Z-A)</option>
+                        <option value="price-asc">Precio (menor a mayor)</option>
+                        <option value="price-desc">Precio (mayor a menor)</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button id="filter-reset" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-sync-alt me-1"></i> Reiniciar
                     </button>
                 </div>
             </div>
-        </div>
-        
-        <!-- Contenedor de productos -->
-        <div class="row g-4" id="flowers-container">
-            <!-- Se cargará dinámicamente -->
-            <div class="col-12 text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Cargando...</span>
+
+            <!-- Results count -->
+            <p id="results-count" class="text-muted">Cargando productos...</p>
+
+            <!-- Product grid/list -->
+            <div id="flowers-container" class="row">
+                <!-- Los productos se cargarán aquí dinámicamente -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2">Cargando productos...</p>
                 </div>
-                <p class="mt-2">Cargando flores...</p>
             </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Navegación de páginas" class="mt-4">
+                <ul id="pagination" class="pagination justify-content-center"></ul>
+            </nav>
         </div>
-        
-        <!-- Paginación -->
-        <nav aria-label="Paginación de productos" class="my-4">
-            <ul class="pagination justify-content-center" id="pagination">
-                <!-- Se generará dinámicamente -->
-            </ul>
-        </nav>
-    </div>
-    
-    <!-- Modal para agregar/editar flores -->
-    <div class="modal fade" id="flowerModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Agregar Nueva Flor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="flower-form">
-                        <div class="mb-3">
-                            <label for="flower-name" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="flower-name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flower-description" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="flower-description" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flower-price" class="form-label">Precio</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="flower-price" step="0.01" required>
+
+        <!-- Quick View Modal -->
+        <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="quickViewTitle">Vista Rápida</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img id="quickViewImage" src="" alt="" class="img-fluid rounded">
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flower-category" class="form-label">Categoría</label>
-                            <select class="form-select" id="flower-category">
-                                <!-- Se llenará dinámicamente -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flower-image" class="form-label">URL de Imagen</label>
-                            <input type="text" class="form-control" id="flower-image">
-                        </div>
-                        <div class="mb-3">
-                            <label for="flower-stock" class="form-label">Stock</label>
-                            <input type="number" class="form-control" id="flower-stock" value="0">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="save-flower-button">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal de Vista Rápida -->
-    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="quickViewTitle">Vista Rápida</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img id="quickViewImage" src="" alt="" class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-6">
-                            <h3 id="quickViewName"></h3>
-                            <p id="quickViewDescription" class="text-muted"></p>
-                            <p class="mb-2">
-                                <span class="badge bg-light text-dark" id="quickViewCategory"></span>
-                            </p>
-                            <h4 id="quickViewPrice" class="text-primary mb-3"></h4>
-                            <p>
-                                <i class="fas fa-box me-2"></i>
-                                <span id="quickViewStock"></span> unidades disponibles
-                            </p>
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-shopping-cart me-2"></i>
-                                    Añadir al Carrito
-                                </button>
-                                <button class="btn btn-outline-secondary">
-                                    <i class="far fa-heart me-2"></i>
-                                    Añadir a Favoritos
-                                </button>
+                            <div class="col-md-6">
+                                <h3 id="quickViewName"></h3>
+                                <p id="quickViewDescription" class="text-muted"></p>
+                                <p class="mb-2">
+                                    <span class="badge bg-light text-dark" id="quickViewCategory"></span>
+                                </p>
+                                <h4 id="quickViewPrice" class="text-primary mb-3"></h4>
+                                <p>
+                                    <i class="fas fa-box me-2"></i>
+                                    <span id="quickViewStock"></span> unidades disponibles
+                                </p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-shopping-cart me-2"></i>
+                                        Añadir al Carrito
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="far fa-heart me-2"></i>
+                                        Añadir a Favoritos
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -320,6 +291,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="/src/scripts/main.js"></script>
     <script type="module" src="/src/scripts/catalog.js"></script>
-    <script type="module" src="/src/scripts/theme.js"></script>
 </body>
 </html>

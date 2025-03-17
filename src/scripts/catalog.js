@@ -10,80 +10,88 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewGridBtn = document.getElementById('view-grid');
     const viewListBtn = document.getElementById('view-list');
     const pagination = document.getElementById('pagination');
-
+    const loginForm = document.getElementById('login-form');
+    const logoutButton = document.getElementById('logout-button');
+    const authContainer = document.getElementById('auth-container');
+    const catalogContainer = document.getElementById('catalog-container');
+    
     // Variables de estado
     let products = []; // Se llenará con datos de la API
     let filteredProducts = [];
-    let currentView = 'grid'; // 'grid' o 'list'
+    let currentView = localStorage.getItem('viewMode') || 'grid'; // 'grid' o 'list'
     let currentPage = 1;
-    const productsPerPage = 9;
+    const productsPerPage = 12;
     let categories = new Set();
+    let isAuthenticated = false;
 
-    // Función para cargar productos (simulada - en producción vendría de una API)
+    // Verificar autenticación
+    const checkAuth = () => {
+        // Verificamos si hay un token en localStorage (simulando autenticación)
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            isAuthenticated = true;
+            showCatalog();
+        } else {
+            showLoginForm();
+        }
+    };
+
+    // Mostrar formulario de login
+    const showLoginForm = () => {
+        if (authContainer && catalogContainer) {
+            authContainer.style.display = 'block';
+            catalogContainer.style.display = 'none';
+        }
+    };
+
+    // Mostrar catálogo (solo para usuarios autenticados)
+    const showCatalog = () => {
+        if (authContainer && catalogContainer) {
+            authContainer.style.display = 'none';
+            catalogContainer.style.display = 'block';
+            
+            // Cargar productos
+            loadProducts();
+        }
+    };
+
+    // Manejar login
+    const handleLogin = (e) => {
+        if (e) e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Simulación de autenticación - en producción esto sería una llamada a API
+        if (username && password) {
+            // Guardar token en localStorage
+            localStorage.setItem('authToken', 'simulated-auth-token');
+            isAuthenticated = true;
+            
+            // Mostrar catálogo
+            showCatalog();
+        } else {
+            alert('Por favor, ingresa un nombre de usuario y contraseña válidos.');
+        }
+    };
+
+    // Manejar logout
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        isAuthenticated = false;
+        showLoginForm();
+    };
+
+    // Función para cargar productos (en producción vendría de una API)
     const loadProducts = async () => {
         try {
-            // Simulando carga de datos
-            // En producción: const response = await fetch('/api/products');
+            // En producción, esta sería una llamada a la API para obtener los productos de Supabase
+            // const response = await fetch('/api/products');
             // const data = await response.json();
             
-            // Datos de muestra
-            products = [
-                {
-                    id: 1,
-                    name: "Ramo de Rosas Rojas",
-                    description: "Hermoso ramo de 12 rosas rojas, perfecto para expresar amor y pasión.",
-                    price: 50000,
-                    category: "Rosas",
-                    image: "./images/rosas-rojas.jpg",
-                    stock: 15
-                },
-                {
-                    id: 2,
-                    name: "Tulipanes Coloridos",
-                    description: "Arreglo de tulipanes holandeses frescos en variados colores.",
-                    price: 45000,
-                    category: "Tulipanes",
-                    image: "./images/tulipanes.jpg",
-                    stock: 20
-                },
-                {
-                    id: 3,
-                    name: "Orquídeas Elegantes",
-                    description: "Arreglo de orquídeas para ocasiones especiales.",
-                    price: 75000,
-                    category: "Orquídeas",
-                    image: "./images/orquideas.jpg",
-                    stock: 10
-                },
-                {
-                    id: 4,
-                    name: "Girasoles Radiantes",
-                    description: "Ramo de girasoles frescos que alegran cualquier espacio.",
-                    price: 40000,
-                    category: "Girasoles",
-                    image: "./images/flor5.jpg",
-                    stock: 25
-                },
-                {
-                    id: 5,
-                    name: "Lirios Blancos",
-                    description: "Elegantes lirios blancos, símbolo de pureza y elegancia.",
-                    price: 55000,
-                    category: "Lirios",
-                    image: "./images/flor3.jpg",
-                    stock: 12
-                },
-                {
-                    id: 6,
-                    name: "Rosas Variadas",
-                    description: "Ramo mixto de rosas en diferentes colores.",
-                    price: 60000,
-                    category: "Rosas",
-                    image: "./images/flor1.jpg",
-                    stock: 15
-                }
-            ];
-
+            // Para la demostración, generamos 100 productos de muestra
+            products = generateSampleProducts(100);
+            
             // Recopilar categorías únicas
             products.forEach(product => categories.add(product.category));
             
@@ -93,10 +101,64 @@ document.addEventListener('DOMContentLoaded', () => {
             // Aplicar filtros iniciales
             applyFilters();
             
+            // Configurar la vista (grid o list)
+            if (currentView === 'list') {
+                currentView = 'list';
+                viewListBtn.classList.add('active');
+                viewGridBtn.classList.remove('active');
+            } else {
+                currentView = 'grid';
+                viewGridBtn.classList.add('active');
+                viewListBtn.classList.remove('active');
+            }
+            
+            renderProducts();
+            
         } catch (error) {
             console.error('Error cargando productos:', error);
             flowersContainer.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error al cargar los productos. Intente nuevamente.</p></div>';
         }
+    };
+
+    // Generar productos de muestra para la demostración
+    const generateSampleProducts = (count) => {
+        const sampleProducts = [];
+        const categories = ['Rosas', 'Tulipanes', 'Orquídeas', 'Girasoles', 'Lirios', 'Claveles', 'Margaritas', 'Crisantemos'];
+        const imageUrls = [
+            './images/rosas-rojas.jpg', 
+            './images/tulipanes.jpg', 
+            './images/orquideas.jpg', 
+            './images/flor5.jpg', 
+            './images/flor3.jpg', 
+            './images/flor1.jpg'
+        ];
+        
+        const descriptions = [
+            "Hermoso arreglo perfecto para expresar amor y pasión.",
+            "Frescas flores importadas en variados colores vibrantes.",
+            "Elegante arreglo para ocasiones especiales y celebraciones.",
+            "Flores radiantes que alegran cualquier espacio del hogar.",
+            "Símbolo de pureza y elegancia, ideales como regalo.",
+            "Arreglo mixto con diferentes colores para toda ocasión."
+        ];
+        
+        for (let i = 1; i <= count; i++) {
+            const categoryIndex = Math.floor(Math.random() * categories.length);
+            const imageIndex = Math.floor(Math.random() * imageUrls.length);
+            const descIndex = Math.floor(Math.random() * descriptions.length);
+            
+            sampleProducts.push({
+                id: i,
+                name: `${categories[categoryIndex]} ${i <= 20 ? "Premium" : "Clásicas"} ${i}`,
+                description: descriptions[descIndex],
+                price: Math.floor(Math.random() * 50000) + 20000,
+                category: categories[categoryIndex],
+                image: imageUrls[imageIndex],
+                stock: Math.floor(Math.random() * 30) + 5
+            });
+        }
+        
+        return sampleProducts;
     };
 
     // Función para poblar selectores de categoría
@@ -202,6 +264,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${product.image}" class="card-img-top" alt="${product.name}">
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text text-muted mb-2">
+                                <span class="badge bg-light text-dark">${product.category}</span>
+                            </p>
                             <p class="card-text">${product.description}</p>
                             <p class="card-text text-primary fw-bold">$${(product.price).toLocaleString()}</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -229,6 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <h5 class="card-title">${product.name}</h5>
                                         <span class="badge bg-primary">$${(product.price).toLocaleString()}</span>
                                     </div>
+                                    <p class="card-text text-muted mb-2">
+                                        <span class="badge bg-light text-dark">${product.category}</span>
+                                    </p>
                                     <p class="card-text">${product.description}</p>
                                     <p class="card-text">
                                         <small class="text-muted">
@@ -349,151 +417,185 @@ document.addEventListener('DOMContentLoaded', () => {
         quickViewModal.show();
     };
 
-// Función para añadir al carrito (simulada)
-const addToCart = (productId) => {
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
-    
-    // Simulación de añadir al carrito
-    console.log(`Producto añadido al carrito: ${product.name}`);
-    
-    // Aquí iría la lógica real para añadir al carrito
-    // Por ejemplo, enviar a una API o guardar en localStorage
-    
-    // Mostrar un toast de confirmación
-    const toastContainer = document.createElement('div');
-    toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
-    toastContainer.style.zIndex = '1050';
-    toastContainer.innerHTML = `
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Flores San Valentín</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    // Función para añadir al carrito (simulada)
+    const addToCart = (productId) => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        
+        // Simulación de añadir al carrito
+        console.log(`Producto añadido al carrito: ${product.name}`);
+        
+        // Aquí iría la lógica real para añadir al carrito
+        // Por ejemplo, enviar a una API o guardar en localStorage
+        
+        // Mostrar un toast de confirmación
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '1050';
+        toastContainer.innerHTML = `
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Flores San Valentín</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    ${product.name} ha sido añadido al carrito.
+                </div>
             </div>
-            <div class="toast-body">
-                <i class="fas fa-check-circle text-success me-2"></i>
-                ${product.name} ha sido añadido al carrito.
-            </div>
-        </div>
-    `;
-    document.body.appendChild(toastContainer);
-    
-    // Eliminar el toast después de 3 segundos
-    setTimeout(() => {
-        toastContainer.querySelector('.toast').classList.remove('show');
+        `;
+        document.body.appendChild(toastContainer);
+        
+        // Eliminar el toast después de 3 segundos
         setTimeout(() => {
-            document.body.removeChild(toastContainer);
-        }, 300);
-    }, 3000);
-};
+            toastContainer.querySelector('.toast').classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(toastContainer);
+            }, 300);
+        }, 3000);
+    };
 
-// Event listeners
-searchInput.addEventListener('input', () => {
-    applyFilters();
-});
-
-categoryFilter.addEventListener('change', () => {
-    // Actualizar tabs para reflejar la selección
-    categoryTabs.querySelectorAll('button').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-category') === categoryFilter.value) {
-            btn.classList.add('active');
-        }
+    // Event listeners para los filtros
+    searchInput.addEventListener('input', () => {
+        applyFilters();
     });
-    
-    if (categoryFilter.value === '') {
+
+    categoryFilter.addEventListener('change', () => {
+        // Actualizar tabs para reflejar la selección
+        categoryTabs.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-category') === categoryFilter.value) {
+                btn.classList.add('active');
+            }
+        });
+        
+        if (categoryFilter.value === '') {
+            categoryTabs.querySelector('button[data-category=""]').classList.add('active');
+        }
+        
+        applyFilters();
+    });
+
+    sortBy.addEventListener('change', () => {
+        applyFilters();
+    });
+
+    resetButton.addEventListener('click', () => {
+        searchInput.value = '';
+        categoryFilter.value = '';
+        sortBy.value = 'name-asc';
+        
+        // Resetear tabs
+        categoryTabs.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('active');
+        });
         categoryTabs.querySelector('button[data-category=""]').classList.add('active');
+        
+        applyFilters();
+    });
+
+    viewGridBtn.addEventListener('click', () => {
+        currentView = 'grid';
+        localStorage.setItem('viewMode', 'grid');
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        renderProducts();
+    });
+
+    viewListBtn.addEventListener('click', () => {
+        currentView = 'list';
+        localStorage.setItem('viewMode', 'list');
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
+        renderProducts();
+    });
+
+    // Event listeners para login/logout
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
     }
     
-    applyFilters();
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+
+    // Agregar CSS personalizado
+    const addCustomCSS = () => {
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Estilos para el formulario de login */
+            .login-container {
+                max-width: 400px;
+                margin: 100px auto;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+                background-color: #fff;
+            }
+            
+            /* Estilos para el catálogo */
+            .product-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            
+            .product-card .card-img-top {
+                height: 200px;
+                object-fit: cover;
+            }
+            
+            .product-card-list .img-fluid {
+                object-fit: cover;
+                height: 100%;
+            }
+            
+            .category-tabs .nav-link {
+                cursor: pointer;
+                border-radius: 20px;
+                padding: 0.5rem 1rem;
+                margin-right: 0.5rem;
+                transition: all 0.3s ease;
+            }
+            
+            .category-tabs .nav-link:hover {
+                background-color: rgba(var(--bs-primary-rgb), 0.1);
+            }
+            
+            .category-tabs .nav-link.active {
+                background-color: var(--bs-primary);
+                color: white;
+            }
+            
+            /* Estilos para el header de usuario autenticado */
+            .user-header {
+                background-color: #f8f9fa;
+                padding: 10px 0;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .user-header .btn-logout {
+                border-radius: 20px;
+                padding: 0.25rem 0.75rem;
+            }
+        `;
+        document.head.appendChild(style);
+    };
+
+    // Inicializar
+    const initialize = () => {
+        addCustomCSS();
+        checkAuth();
+        
+        // Inicializar tooltips de Bootstrap
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    };
+
+    initialize();
 });
-
-sortBy.addEventListener('change', () => {
-    applyFilters();
-});
-
-resetButton.addEventListener('click', () => {
-    searchInput.value = '';
-    categoryFilter.value = '';
-    sortBy.value = 'name-asc';
-    
-    // Resetear tabs
-    categoryTabs.querySelectorAll('button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    categoryTabs.querySelector('button[data-category=""]').classList.add('active');
-    
-    applyFilters();
-});
-
-viewGridBtn.addEventListener('click', () => {
-    currentView = 'grid';
-    viewGridBtn.classList.add('active');
-    viewListBtn.classList.remove('active');
-    renderProducts();
-});
-
-viewListBtn.addEventListener('click', () => {
-    currentView = 'list';
-    viewListBtn.classList.add('active');
-    viewGridBtn.classList.remove('active');
-    renderProducts();
-});
-
-// Agregar CSS personalizado
-const addCustomCSS = () => {
-    const style = document.createElement('style');
-    style.textContent = `
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .product-card .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .product-card-list .img-fluid {
-            object-fit: cover;
-            height: 100%;
-        }
-        
-        .category-tabs .nav-link {
-            cursor: pointer;
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            margin-right: 0.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .category-tabs .nav-link:hover {
-            background-color: rgba(var(--bs-primary-rgb), 0.1);
-        }
-        
-        .category-tabs .nav-link.active {
-            background-color: var(--bs-primary);
-            color: white;
-        }
-    `;
-    document.head.appendChild(style);
-};
-
-// Inicializar
-const initialize = () => {
-    addCustomCSS();
-    loadProducts();
-    
-    // Inicializar tooltips de Bootstrap
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-};
-
-initialize();
-});z
