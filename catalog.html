@@ -91,44 +91,6 @@
         </div>
     </nav>
     
-    <!-- Contenedor de Autenticación - se muestra solo si no hay sesión -->
-    <div id="auth-container" style="display: none;">
-        <div class="login-container">
-            <h2 class="text-center mb-4">Iniciar Sesión</h2>
-            <form id="login-form">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Usuario</label>
-                    <input type="text" class="form-control" id="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Contenedor del Catálogo - se muestra solo si hay sesión -->
-    <div id="catalog-container" style="display: none;">
-        <!-- Header del usuario autenticado -->
-        <div class="user-header">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0">Flores San Valentín</h5>
-                    </div>
-                    <div>
-                        <button id="logout-button" class="btn btn-outline-danger btn-sm btn-logout">
-                            <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Contenido Principal -->
         <div class="container py-4">
             <header class="pb-3 mb-4 border-bottom">
@@ -291,5 +253,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="/src/scripts/main.js"></script>
     <script type="module" src="/src/scripts/catalog.js"></script>
+    <script type="module" src="./src/scripts/checkAuth.js"></script>
 </body>
 </html>

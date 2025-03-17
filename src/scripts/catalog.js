@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewGridBtn = document.getElementById('view-grid');
     const viewListBtn = document.getElementById('view-list');
     const pagination = document.getElementById('pagination');
-    const loginForm = document.getElementById('login-form');
     const logoutButton = document.getElementById('logout-button');
-    const authContainer = document.getElementById('auth-container');
     const catalogContainer = document.getElementById('catalog-container');
     
     // Variables de estado
@@ -22,27 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     const productsPerPage = 12;
     let categories = new Set();
-    let isAuthenticated = false;
 
-    // Verificar autenticación
-    const checkAuth = () => {
-        // Verificamos si hay un token en localStorage (simulando autenticación)
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            isAuthenticated = true;
-            showCatalog();
-        } else {
-            showLoginForm();
-        }
-    };
-
-    // Mostrar formulario de login
-    const showLoginForm = () => {
-        if (authContainer && catalogContainer) {
-            authContainer.style.display = 'block';
-            catalogContainer.style.display = 'none';
-        }
-    };
+    if (catalogContainer) {
+        catalogContainer.style.display = 'block';
+    }
 
     // Mostrar catálogo (solo para usuarios autenticados)
     const showCatalog = () => {
@@ -55,31 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Manejar login
-    const handleLogin = (e) => {
-        if (e) e.preventDefault();
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        
-        // Simulación de autenticación - en producción esto sería una llamada a API
-        if (username && password) {
-            // Guardar token en localStorage
-            localStorage.setItem('authToken', 'simulated-auth-token');
-            isAuthenticated = true;
-            
-            // Mostrar catálogo
-            showCatalog();
-        } else {
-            alert('Por favor, ingresa un nombre de usuario y contraseña válidos.');
-        }
-    };
-
     // Manejar logout
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        isAuthenticated = false;
-        showLoginForm();
+    const handleLogout = async () => {
+        try {
+            // Importa la función signOut de auth.js
+            const { signOut } = await import('./auth.js');
+            await signOut();
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
     };
 
     // Función para cargar productos (en producción vendría de una API)
@@ -510,11 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProducts();
     });
 
-    // Event listeners para login/logout
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-    
+    // Event listeners para logout
     if (logoutButton) {
         logoutButton.addEventListener('click', handleLogout);
     }
@@ -588,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar
     const initialize = () => {
         addCustomCSS();
-        checkAuth();
+        loadProducts();
         
         // Inicializar tooltips de Bootstrap
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
