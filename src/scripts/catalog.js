@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             
             products = data || [];
-            console.log('Productos cargados:', products);
             
             // Recopilar categorías únicas
             categories = new Set(products.map(product => product.category));
@@ -261,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Agregar event listeners a los botones de vista rápida
         document.querySelectorAll('.quick-view').forEach(button => {
             button.addEventListener('click', () => {
-                // No usar parseInt aquí
                 const productId = button.getAttribute('data-id');
                 showQuickView(productId);
             });
@@ -338,16 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para mostrar vista rápida del producto
     const showQuickView = (productId) => {
-        console.log('showQuickView llamado con ID:', productId);
-        // No usar parseInt aquí, ya que productId es un UUID (string)
         const product = products.find(p => p.id === productId);
-        if (!product) {
-            console.error(`Producto con ID ${productId} no encontrado`);
-            // Para depuración, muestra los IDs disponibles
-            console.log('IDs disponibles:', products.map(p => p.id));
-            return;
-        }
-        console.log('Producto encontrado:', product);
         
         // Llenar modal con datos del producto
         document.getElementById('quickViewTitle').textContent = 'Vista Rápida: ' + product.name;
@@ -360,16 +349,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Mostrar modal (asegúrate de que el modal exista)
         const quickViewModal = document.getElementById('quickViewModal');
-        console.log('Modal encontrado:', quickViewModal);
         
         if (quickViewModal) {
-            console.log('Intentando mostrar el modal...');
             try {
                 const bsModal = new bootstrap.Modal(quickViewModal);
                 bsModal.show();
-                console.log('Modal mostrado correctamente');
             } catch (error) {
-                console.error('Error al mostrar el modal:', error);
+                console.error('Error al mostrar modal:', error);
             }
         } else {
             console.error('El elemento quickViewModal no existe en el DOM');
