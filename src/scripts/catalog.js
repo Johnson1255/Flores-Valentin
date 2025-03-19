@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 productCard.className = 'col-md-4 mb-4';
                 productCard.innerHTML = `
                     <div class="card h-100 product-card">
-                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                        <img src="${product.image_url}" class="card-img-top" alt="${product.name}">
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
                             <p class="card-text text-muted mb-2">
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="card product-card-list">
                         <div class="row g-0">
                             <div class="col-md-3">
-                                <img src="${product.image}" class="img-fluid rounded-start h-100" alt="${product.name}">
+                                <img src="${product.image_url}" class="img-fluid rounded-start h-100" alt="${product.name}">
                             </div>
                             <div class="col-md-9">
                                 <div class="card-body">
@@ -337,7 +337,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para mostrar vista rápida del producto
     const showQuickView = (productId) => {
         const product = products.find(p => p.id === productId);
-        if (!product) return;
+        if (!product) {
+            console.error(`Producto con ID ${productId} no encontrado`);
+            return;
+        }
         
         // Llenar modal con datos del producto
         document.getElementById('quickViewTitle').textContent = 'Vista Rápida: ' + product.name;
@@ -346,11 +349,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('quickViewCategory').textContent = product.category;
         document.getElementById('quickViewPrice').textContent = '$' + (product.price).toLocaleString();
         document.getElementById('quickViewStock').textContent = product.stock;
-        document.getElementById('quickViewImage').src = product.image;
+        document.getElementById('quickViewImage').src = product.image_url;
         
-        // Mostrar modal
-        const quickViewModal = new bootstrap.Modal(document.getElementById('quickViewModal'));
-        quickViewModal.show();
+        // Mostrar modal (asegúrate de que el modal exista)
+        const quickViewModal = document.getElementById('quickViewModal');
+        if (quickViewModal) {
+            const bsModal = new bootstrap.Modal(quickViewModal);
+            bsModal.show();
+        } else {
+            console.error('El elemento quickViewModal no existe en el DOM');
+        }
     };
 
     // Función para añadir al carrito (simulada)
@@ -527,6 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+        
+        // Inicializar modales de Bootstrap
+        const quickViewModal = document.getElementById('quickViewModal');
+        if (quickViewModal) {
+            new bootstrap.Modal(quickViewModal);
+        }
     };
 
     initialize();
