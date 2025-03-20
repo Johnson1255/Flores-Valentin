@@ -106,6 +106,25 @@
                                 </div>
                             </div>
                             
+                            <!-- Nuevo campo para la dirección de destino -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="delivery-address" class="form-label">Dirección de entrega*</label>
+                                    <input type="text" class="form-control" id="delivery-address" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="delivery-city" class="form-label">Ciudad*</label>
+                                    <input type="text" class="form-control" id="delivery-city" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="delivery-postal-code" class="form-label">Código postal</label>
+                                    <input type="text" class="form-control" id="delivery-postal-code">
+                                </div>
+                            </div>
+                            
                             <h4 class="mb-3">Detalles del pedido</h4>
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -144,98 +163,219 @@
                                 </div>
                             </div>
                             
-                            <h4 class="mb-3">Preferencias</h4>
-                            <div class="mb-3">
-                                <label class="form-label">Flores preferidas (selecciona hasta 3)</label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Rosas" id="roses">
-                                            <label class="form-check-label" for="roses">Rosas</label>
+                            <!-- Productos para incluir (NUEVO) -->
+                            <h4 class="mb-3">Productos para incluir</h4>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="include-flowers" checked>
+                                        <label class="form-check-label fw-bold" for="include-flowers">Incluir flores</label>
+                                    </div>
+                                    <div id="flowers-options" class="ms-4 mb-3">
+                                        <label class="form-label">Tipos de flores (selecciona hasta 3)</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Rosas" id="roses">
+                                                    <label class="form-check-label" for="roses">Rosas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Tulipanes" id="tulips">
+                                                    <label class="form-check-label" for="tulips">Tulipanes</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Girasoles" id="sunflowers">
+                                                    <label class="form-check-label" for="sunflowers">Girasoles</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Lirios" id="lilies">
+                                                    <label class="form-check-label" for="lilies">Lirios</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Orquídeas" id="orchids">
+                                                    <label class="form-check-label" for="orchids">Orquídeas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Claveles" id="carnations">
+                                                    <label class="form-check-label" for="carnations">Claveles</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Margaritas" id="daisies">
+                                                    <label class="form-check-label" for="daisies">Margaritas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Hortensias" id="hydrangeas">
+                                                    <label class="form-check-label" for="hydrangeas">Hortensias</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input flower-pref" type="checkbox" value="Otra" id="other-flower">
+                                                    <label class="form-check-label" for="other-flower">Otra</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Tulipanes" id="tulips">
-                                            <label class="form-check-label" for="tulips">Tulipanes</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Girasoles" id="sunflowers">
-                                            <label class="form-check-label" for="sunflowers">Girasoles</label>
+                                        
+                                        <label class="form-label mt-3">Colores preferidos (selecciona hasta 3)</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Rojo" id="red">
+                                                    <label class="form-check-label" for="red">Rojo</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Rosa" id="pink">
+                                                    <label class="form-check-label" for="pink">Rosa</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Blanco" id="white">
+                                                    <label class="form-check-label" for="white">Blanco</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Amarillo" id="yellow">
+                                                    <label class="form-check-label" for="yellow">Amarillo</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Naranja" id="orange">
+                                                    <label class="form-check-label" for="orange">Naranja</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Morado" id="purple">
+                                                    <label class="form-check-label" for="purple">Morado</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Azul" id="blue">
+                                                    <label class="form-check-label" for="blue">Azul</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Verde" id="green">
+                                                    <label class="form-check-label" for="green">Verde</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input color-pref" type="checkbox" value="Otro" id="other-color">
+                                                    <label class="form-check-label" for="other-color">Otro</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Lirios" id="lilies">
-                                            <label class="form-check-label" for="lilies">Lirios</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Orquídeas" id="orchids">
-                                            <label class="form-check-label" for="orchids">Orquídeas</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Claveles" id="carnations">
-                                            <label class="form-check-label" for="carnations">Claveles</label>
+                                    
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="include-chocolates">
+                                        <label class="form-check-label fw-bold" for="include-chocolates">Incluir chocolates</label>
+                                    </div>
+                                    <div id="chocolates-options" class="ms-4 mb-3 d-none">
+                                        <label class="form-label">Tipos de chocolates (selecciona hasta 2)</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Trufas" id="truffles">
+                                                    <label class="form-check-label" for="truffles">Trufas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Bombones" id="pralines">
+                                                    <label class="form-check-label" for="pralines">Bombones</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Chocolate Belga" id="belgian">
+                                                    <label class="form-check-label" for="belgian">Chocolate Belga</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Chocolate Suizo" id="swiss">
+                                                    <label class="form-check-label" for="swiss">Chocolate Suizo</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Chocolate Artesanal" id="artisan">
+                                                    <label class="form-check-label" for="artisan">Chocolate Artesanal</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input chocolate-pref" type="checkbox" value="Chocolate con Licor" id="liquor">
+                                                    <label class="form-check-label" for="liquor">Chocolate con Licor</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Margaritas" id="daisies">
-                                            <label class="form-check-label" for="daisies">Margaritas</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Hortensias" id="hydrangeas">
-                                            <label class="form-check-label" for="hydrangeas">Hortensias</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input flower-pref" type="checkbox" value="Otra" id="other-flower">
-                                            <label class="form-check-label" for="other-flower">Otra</label>
+                                    
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="include-plushies">
+                                        <label class="form-check-label fw-bold" for="include-plushies">Incluir peluches</label>
+                                    </div>
+                                    <div id="plushies-options" class="ms-4 mb-3 d-none">
+                                        <label class="form-label">Tipo de peluche</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Oso de Peluche" id="teddy">
+                                                    <label class="form-check-label" for="teddy">Oso de Peluche</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Conejo de Peluche" id="rabbit">
+                                                    <label class="form-check-label" for="rabbit">Conejo de Peluche</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Unicornio de Peluche" id="unicorn">
+                                                    <label class="form-check-label" for="unicorn">Unicornio de Peluche</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Panda de Peluche" id="panda">
+                                                    <label class="form-check-label" for="panda">Panda de Peluche</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Perrito de Peluche" id="dog">
+                                                    <label class="form-check-label" for="dog">Perrito de Peluche</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input plushie-pref" type="radio" name="plushie-type" value="Gatito de Peluche" id="cat">
+                                                    <label class="form-check-label" for="cat">Gatito de Peluche</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Colores preferidos (selecciona hasta 3)</label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Rojo" id="red">
-                                            <label class="form-check-label" for="red">Rojo</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Rosa" id="pink">
-                                            <label class="form-check-label" for="pink">Rosa</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Blanco" id="white">
-                                            <label class="form-check-label" for="white">Blanco</label>
-                                        </div>
+                                    
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="include-gifts">
+                                        <label class="form-check-label fw-bold" for="include-gifts">Incluir otros regalos</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Amarillo" id="yellow">
-                                            <label class="form-check-label" for="yellow">Amarillo</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Naranja" id="orange">
-                                            <label class="form-check-label" for="orange">Naranja</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Morado" id="purple">
-                                            <label class="form-check-label" for="purple">Morado</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Azul" id="blue">
-                                            <label class="form-check-label" for="blue">Azul</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Verde" id="green">
-                                            <label class="form-check-label" for="green">Verde</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input color-pref" type="checkbox" value="Otro" id="other-color">
-                                            <label class="form-check-label" for="other-color">Otro</label>
+                                    <div id="gifts-options" class="ms-4 mb-3 d-none">
+                                        <label class="form-label">Selecciona otros regalos (selecciona hasta 2)</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Tarjeta Personalizada" id="card">
+                                                    <label class="form-check-label" for="card">Tarjeta Personalizada</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Velas Aromáticas" id="candles">
+                                                    <label class="form-check-label" for="candles">Velas Aromáticas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Joyería" id="jewelry">
+                                                    <label class="form-check-label" for="jewelry">Joyería</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Perfume" id="perfume">
+                                                    <label class="form-check-label" for="perfume">Perfume</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Set de Vinos" id="wine">
+                                                    <label class="form-check-label" for="wine">Set de Vinos</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input gift-pref" type="checkbox" value="Globos" id="balloons">
+                                                    <label class="form-check-label" for="balloons">Globos</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -321,5 +461,6 @@
     <script type="module" src="/src/scripts/special-order.js"></script>
     <script type="module" src="/src/scripts/theme.js"></script>
     <script type="module" src="/src/scripts/checkAuth.js"></script>
+    <script type="module" src="/src/scripts/main.js"></script>
 </body>
 </html>
