@@ -74,10 +74,37 @@ class CarritoCompras {
             const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este producto?');
             
             if (confirmDelete) {
+                // Eliminar del array local
                 this.productos = this.productos.filter(item => item.id !== idProducto);
-                await this.actualizarCarrito();
                 
-                // Eliminar el elemento del DOM
+                // Actualizar en localStorage
+                this.guardarCarritoEnLocal();
+                
+                // Actualizar en Supabase de forma explícita
+                try {
+                    const usuario = await this.supabase.auth.getUser();
+                    if (usuario.data?.user) {
+                        const { error } = await this.supabase
+                            .from('shopping_cart')
+                            .upsert({
+                                user_id: usuario.data.user.id,
+                                items: this.productos,
+                                updated_at: new Date().toISOString()
+                            }, {
+                                onConflict: 'user_id'
+                            });
+                        
+                        if (error) throw error;
+                    }
+                } catch (error) {
+                    console.error('Error al actualizar Supabase:', error);
+                }
+                
+                // Actualizar la UI
+                this.renderizarCarrito();
+                this.calcularTotales();
+                
+                // Eliminar el elemento del DOM si existe
                 const itemElement = this.contenedorProductos.querySelector(`[data-product-id="${idProducto}"]`);
                 if (itemElement) {
                     itemElement.remove();
