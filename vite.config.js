@@ -19,6 +19,7 @@ export default defineConfig({
     define: {
         'process.env': {}
     },
+    envDir: './', // directorio archivo .env
     plugins: [
         viteImagemin({
             gifsicle: {
