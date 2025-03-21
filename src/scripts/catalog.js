@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${message}</span>
                     </div>
                     <div class="mt-2 d-flex justify-content-end">
-                        <a href="./shoppingcart.html" class="btn btn-primary btn-sm">Ver carrito</a>
+                        <a href="./shoppingCart.html" class="btn btn-primary btn-sm">Ver carrito</a>
                     </div>
                 </div>
             </div>
