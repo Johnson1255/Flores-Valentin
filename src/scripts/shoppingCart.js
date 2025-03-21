@@ -31,45 +31,61 @@ class CarritoCompras {
         this.botonCupon?.addEventListener('click', () => this.aplicarCupon());
 
         // Event delegation para los botones de cantidad y eliminar
-        this.contenedorProductos?.addEventListener('click', (e) => {
-            const objetivo = e.target;
+        this.contenedorProductos?.addEventListener('click', async (e) => {
+            const target = e.target;
+            const cartItem = target.closest('.cart-item');
             
-            // Manejo de disminución de cantidad
-            if (objetivo.classList.contains('quantity-decrease')) {
-                const idProducto = objetivo.closest('.cart-item').dataset.id;
-                this.actualizarCantidad(idProducto, 'disminuir');
-            } 
-            // Manejo de aumento de cantidad
-            else if (objetivo.classList.contains('quantity-increase')) {
-                const idProducto = objetivo.closest('.cart-item').dataset.id;
-                this.actualizarCantidad(idProducto, 'aumentar');
-            } 
-            // Manejo de eliminación de producto
-            else if (objetivo.classList.contains('remove-item')) {
-                const idProducto = objetivo.closest('.cart-item').dataset.id;
-                this.eliminarProducto(idProducto);
+            if (!cartItem) return;
+            
+            const productId = cartItem.dataset.productId;
+
+            // Manejo de botones de cantidad
+            if (target.classList.contains('quantity-btn')) {
+                const action = target.dataset.action;
+                await this.actualizarCantidad(productId, action);
+            }
+
+            // Manejo del botón eliminar
+            if (target.classList.contains('remove-item') || target.closest('.remove-item')) {
+                e.preventDefault();
+                await this.eliminarProducto(productId);
             }
         });
     }
 
     // Actualiza la cantidad de un producto específico
-    actualizarCantidad(idProducto, accion) {
+    async actualizarCantidad(idProducto, accion) {
         const producto = this.productos.find(item => item.id === idProducto);
         if (!producto) return;
 
-        if (accion === 'aumentar') {
+        if (accion === 'increase') {
             producto.quantity++;
-        } else if (accion === 'disminuir' && producto.quantity > 1) {
+        } else if (accion === 'decrease' && producto.quantity > 1) {
             producto.quantity--;
         }
 
-        this.actualizarCarrito();
+        await this.actualizarCarrito();
+        this.mostrarConfirmacion(`Cantidad actualizada: ${producto.name}`, producto.quantity);
     }
 
     // Elimina un producto del carrito
-    eliminarProducto(idProducto) {
-        this.productos = this.productos.filter(item => item.id !== idProducto);
-        this.actualizarCarrito();
+    async eliminarProducto(idProducto) {
+        try {
+            const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este producto?');
+            
+            if (confirmDelete) {
+                this.productos = this.productos.filter(item => item.id !== idProducto);
+                await this.actualizarCarrito();
+                
+                // Eliminar el elemento del DOM
+                const itemElement = this.contenedorProductos.querySelector(`[data-product-id="${idProducto}"]`);
+                if (itemElement) {
+                    itemElement.remove();
+                }
+            }
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+        }
     }
 
     // Actualiza el estado del carrito en todas las capas (local, Supabase y UI)
@@ -106,7 +122,7 @@ class CarritoCompras {
     // Calcula los totales del carrito (subtotal, envío, impuestos y total)
     calcularTotales() {
         const subtotal = this.productos.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const envio = subtotal > 0 ? 5.00 : 0;
+        const envio = subtotal > 0 ? 15000.00 : 0;
         const impuesto = subtotal * 0.19; // 19% IVA
         const total = subtotal + envio + impuesto;
 
@@ -135,15 +151,20 @@ class CarritoCompras {
 
         // Genera el HTML para cada producto en el carrito
         this.contenedorProductos.innerHTML = this.productos.map(item => `
-            <div class="cart-item d-flex align-items-center mb-3 p-3 border rounded" data-id="${item.id}">
-                <img src="${item.image_url}" alt="${item.name}" class="cart-item-image me-3">
+            <div class="cart-item d-flex align-items-center mb-3 p-3 border rounded" data-product-id="${item.id}">
+                <div class="cart-item-image-container me-4" style="width: 120px; height: 120px; flex-shrink: 0; overflow: hidden;">
+                    <img src="${item.image_url}" 
+                         alt="${item.name}" 
+                         class="cart-item-image"
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
                 <div class="cart-item-details flex-grow-1">
                     <h5 class="cart-item-title">${item.name}</h5>
                     <p class="cart-item-price mb-1">$${(item.price * item.quantity).toFixed(2)}</p>
                     <div class="quantity-controls">
-                        <button class="btn btn-sm btn-outline-secondary quantity-decrease">-</button>
-                        <input type="number" class="form-control d-inline-block mx-2" value="${item.quantity}" readonly>
-                        <button class="btn btn-sm btn-outline-secondary quantity-increase">+</button>
+                        <button class="btn btn-sm btn-outline-secondary quantity-btn" data-action="decrease">-</button>
+                        <input type="number" class="form-control d-inline-block mx-2" style="width: 60px;" value="${item.quantity}" readonly>
+                        <button class="btn btn-sm btn-outline-secondary quantity-btn" data-action="increase">+</button>
                     </div>
                 </div>
                 <button class="btn btn-link text-danger remove-item">
@@ -252,7 +273,7 @@ class CarritoCompras {
     // Calcula el total final incluyendo subtotal, envío e impuestos
     calcularTotal() {
         const subtotal = this.productos.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const envio = subtotal > 0 ? 5.00 : 0;
+        const envio = subtotal > 0 ? 15000.00 : 0;
         const impuesto = subtotal * 0.19;
         return subtotal + envio + impuesto;
     }
