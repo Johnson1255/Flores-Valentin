@@ -59,6 +59,7 @@
                     <a href="./login.html" class="action-button primary">
                         <i class="fas fa-shopping-cart"></i>
                         <span data-i18n="buy_now">Comprar Ahora</span>
+                        <span class="cart-counter">0</span>
                     </a>
                 </div>
             </div>
@@ -178,7 +179,7 @@
                                     <span id="quickViewStock"></span> unidades disponibles
                                 </p>
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary add-to-cart" data-id="${product.id}">
                                         <i class="fas fa-shopping-cart me-2"></i>
                                         Añadir al Carrito
                                     </button>

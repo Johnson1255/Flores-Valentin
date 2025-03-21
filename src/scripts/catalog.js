@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Agregar event listeners a los botones de añadir al carrito
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', () => {
-                const productId = parseInt(button.getAttribute('data-id'));
+                const productId = button.getAttribute('data-id');
                 addToCart(productId);
             });
         });
@@ -362,18 +362,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Función para añadir al carrito (simulada)
-    const addToCart = (productId) => {
-        const product = products.find(p => p.id === productId);
-        if (!product) return;
-        
-        // Simulación de añadir al carrito
-        console.log(`Producto añadido al carrito: ${product.name}`);
-        
-        // Aquí iría la lógica real para añadir al carrito
-        // Por ejemplo, enviar a una API o guardar en localStorage
-        
-        // Mostrar un toast de confirmación
+    const addToCart = async (productId) => {
+        try {
+            const { supabase } = await import('./supabase.js');
+
+            // Get full product details from Supabase
+            const { data: product, error } = await supabase
+                .from('products')
+                .select('*')
+                .eq('id', productId)
+                .single();
+            
+            if (error) throw error;
+            
+            if (!product) {
+                console.error('Product not found');
+                return;
+            }
+            
+            // Use CarritoCompras instance if available
+            if (window.carrito) {
+                await window.carrito.agregarProducto(product, 1);
+            } else {
+                // Fallback to localStorage if CarritoCompras not initialized
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existingProductIndex = cart.findIndex(item => item.id === product.id);
+                
+                if (existingProductIndex >= 0) {
+                    cart[existingProductIndex].quantity += 1;
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image_url: product.image_url,
+                        quantity: 1
+                    });
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCounter();
+                
+                // Show confirmation toast
+                showToast(`${product.name} ha sido añadido al carrito.`);
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
+    };
+    
+    // Add helper function for toast display if window.carrito isn't available
+    const showToast = (message) => {
         const toastContainer = document.createElement('div');
         toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
         toastContainer.style.zIndex = '1050';
@@ -384,14 +423,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
-                    <i class="fas fa-check-circle text-success me-2"></i>
-                    ${product.name} ha sido añadido al carrito.
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>${message}</span>
+                    </div>
+                    <div class="mt-2 d-flex justify-content-end">
+                        <a href="./shoppingcart.html" class="btn btn-primary btn-sm">Ver carrito</a>
+                    </div>
                 </div>
             </div>
         `;
         document.body.appendChild(toastContainer);
         
-        // Eliminar el toast después de 3 segundos
         setTimeout(() => {
             toastContainer.querySelector('.toast').classList.remove('show');
             setTimeout(() => {
@@ -530,6 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialize = () => {
         addCustomCSS();
         loadProducts();
+        updateCartCounter();
         
         // Inicializar tooltips de Bootstrap
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -542,6 +586,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (quickViewModal) {
             new bootstrap.Modal(quickViewModal);
         }
+    };
+
+    const updateCartCounter = () => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+        
+        // Update cart counters in headers
+        const cartCounters = document.querySelectorAll('.cart-counter');
+        cartCounters.forEach(counter => {
+            counter.textContent = cartCount;
+            counter.style.display = cartCount > 0 ? 'flex' : 'none';
+        });
     };
 
     initialize();

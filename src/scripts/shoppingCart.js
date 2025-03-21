@@ -58,9 +58,9 @@ class CarritoCompras {
         if (!producto) return;
 
         if (accion === 'aumentar') {
-            producto.cantidad++;
-        } else if (accion === 'disminuir' && producto.cantidad > 1) {
-            producto.cantidad--;
+            producto.quantity++;
+        } else if (accion === 'disminuir' && producto.quantity > 1) {
+            producto.quantity--;
         }
 
         this.actualizarCarrito();
@@ -111,20 +111,32 @@ class CarritoCompras {
         const total = subtotal + envio + impuesto;
 
         // Actualiza los elementos en la UI con los nuevos totales
-        this.elementoSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-        this.elementoEnvio.textContent = `$${envio.toFixed(2)}`;
-        this.elementoImpuesto.textContent = `$${impuesto.toFixed(2)}`;
-        this.elementoTotal.textContent = `$${total.toFixed(2)}`;
+        if (this.elementoSubtotal) this.elementoSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        if (this.elementoEnvio) this.elementoEnvio.textContent = `$${envio.toFixed(2)}`;
+        if (this.elementoImpuesto) this.elementoImpuesto.textContent = `$${impuesto.toFixed(2)}`;
+        if (this.elementoTotal) this.elementoTotal.textContent = `$${total.toFixed(2)}`;
     }
 
     // Renderiza los productos del carrito en la UI
     renderizarCarrito() {
         if (!this.contenedorProductos) return;
 
+        // Si el carrito está vacío, mostrar mensaje
+        if (this.productos.length === 0) {
+            this.contenedorProductos.innerHTML = `
+                <div class="cart-empty text-center p-4">
+                    <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                    <p>Tu carrito está vacío</p>
+                    <a href="./catalog.html" class="btn btn-primary">Ver catálogo</a>
+                </div>
+            `;
+            return;
+        }
+
         // Genera el HTML para cada producto en el carrito
         this.contenedorProductos.innerHTML = this.productos.map(item => `
             <div class="cart-item d-flex align-items-center mb-3 p-3 border rounded" data-id="${item.id}">
-                <img src="${item.image}" alt="${item.name}" class="cart-item-image me-3">
+                <img src="${item.image_url}" alt="${item.name}" class="cart-item-image me-3">
                 <div class="cart-item-details flex-grow-1">
                     <h5 class="cart-item-title">${item.name}</h5>
                     <p class="cart-item-price mb-1">$${(item.price * item.quantity).toFixed(2)}</p>
@@ -154,7 +166,6 @@ class CarritoCompras {
             if (this.productos.length === 0) return;
             this.renderizarCarrito();
             this.calcularTotales();
-            console.log('Carrito cargado desde localStorage:', this.productos);
         } catch (error) {
             console.error('Error al cargar el carrito desde localStorage:', error);
         }
@@ -219,7 +230,7 @@ class CarritoCompras {
                 .insert({
                     user_id: usuario.data.user.id,
                     items: this.productos,
-                    total: this.calcularTotal(),
+                    total_amount: this.calcularTotal(),
                     status: 'pending'
                 })
                 .select()
@@ -245,9 +256,60 @@ class CarritoCompras {
         const impuesto = subtotal * 0.19;
         return subtotal + envio + impuesto;
     }
+
+    // Método para añadir un producto al carrito
+    async agregarProducto(producto, cantidad = 1) {
+        // Verificar si el producto ya está en el carrito
+        const productoExistente = this.productos.find(item => item.id === producto.id);
+        
+        if (productoExistente) {
+            // Si el producto ya existe, actualiza su cantidad
+            productoExistente.quantity += cantidad;
+        } else {
+            // Si no existe, agrega el producto con la cantidad especificada
+            this.productos.push({
+                id: producto.id,
+                name: producto.name,
+                price: producto.price,
+                image_url: producto.image_url,
+                quantity: cantidad
+            });
+        }
+        
+        // Actualiza el carrito en todas las capas
+        await this.actualizarCarrito();
+        
+        // Opcional: Mostrar confirmación visual
+        this.mostrarConfirmacion(producto.name, cantidad);
+    }
+    
+    // Método para mostrar una confirmación visual de producto añadido
+    mostrarConfirmacion(nombreProducto, cantidad) {
+        const mensaje = `${nombreProducto} (${cantidad}) añadido al carrito`;
+        
+        // Crear elemento de notificación
+        const notificacion = document.createElement('div');
+        notificacion.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+        notificacion.style.zIndex = '1000';
+        notificacion.innerHTML = `
+            <i class="fas fa-check-circle me-2"></i>
+            ${mensaje}
+        `;
+        
+        // Añadir al DOM
+        document.body.appendChild(notificacion);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+            notificacion.remove();
+        }, 3000);
+    }
 }
 
 // Inicializa el carrito cuando el DOM está completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-    const carrito = new CarritoCompras();
+    window.carrito = new CarritoCompras();
 });
+
+// Exponer el carrito globalmente para que pueda ser usado desde otras páginas
+export default CarritoCompras;
