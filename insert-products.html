@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .delete-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #productList {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #productList th, #productList td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #productList th {
+            background-color: #f2f2f2;
+        }
+        #productList tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .status-indicator {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .admin-status {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .no-admin-status {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Administración de Productos en Supabase</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="insert">Insertar Productos</div>
+        <div class="tab" data-tab="manage">Gestionar Productos</div>
+    </div>
+    
+    <div id="insertTab" class="tab-content active">
+        <h2>Insertar Productos</h2>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Tu email">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" placeholder="Tu contraseña">
+        </div>
+        
+        <button id="insertBtn">Insertar 100 Productos</button>
+        
+        <div id="result">
+            <p>Los resultados aparecerán aquí...</p>
+        </div>
+    </div>
+    
+    <div id="manageTab" class="tab-content">
+        <h2>Gestionar Productos</h2>
+        
+        <div class="form-group">
+            <label for="manageEmail">Email:</label>
+            <input type="email" id="manageEmail" placeholder="Tu email">
+        </div>
+        
+        <div class="form-group">
+            <label for="managePassword">Contraseña:</label>
+            <input type="password" id="managePassword" placeholder="Tu contraseña">
+        </div>
+        
+        <button id="loadProductsBtn">Cargar Productos</button>
+        <div id="adminStatus"></div>
+        
+        <div id="manageResult">
+            <p>Inicia sesión y carga los productos para gestionar el inventario.</p>
+        </div>
+        
+        <table id="productList">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se cargarán aquí -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script type="module">
+        import { insertProducts, deleteProduct, getProducts } from '/src/scripts/push-post.js';
+        import { signIn } from '/src/scripts/auth.js';
+        import { supabase } from './src/scripts/supabase.js';
+        
+        // Variable para almacenar el estado de administrador
+        let isAdmin = false;
+        
+        // Manejo de tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Desactivar todos los tabs y contenidos
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Activar el tab seleccionado
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId + 'Tab').classList.add('active');
+            });
+        });
+        
+        // Evento para insertar productos
+        document.getElementById('insertBtn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = '<p>Iniciando proceso de inserción...</p>';
+            
+            try {
+                const count = await insertProducts(email, password);
+                resultDiv.innerHTML = `<p>¡Proceso completado! Se insertaron ${count} productos correctamente.</p>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        });
+        
+        // Función para verificar si el usuario tiene rol de admin
+        async function checkAdminRole() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                
+                if (!user) {
+                    return false;
+                }
+                
+                // Obtener los metadatos del usuario que incluyen el rol
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', user.id)
+                    .single();
+                    
+                if (error) {
+                    throw error;
+                }
+                
+                return data && data.role === 'admin';
+            } catch (error) {
+                console.error('Error al verificar rol:', error);
+                return false;
+            }
+        }
+        
+        // Evento para cargar productos
+        document.getElementById('loadProductsBtn').addEventListener('click', async () => {
+            const email = document.getElementById('manageEmail').value;
+            const password = document.getElementById('managePassword').value;
+            const resultDiv = document.getElementById('manageResult');
+            const adminStatusDiv = document.getElementById('adminStatus');
+            
+            resultDiv.innerHTML = '<p>Iniciando sesión y cargando productos...</p>';
+            
+            try {
+                // Iniciar sesión
+                await signIn(email, password);
+                
+                // Verificar si el usuario es administrador
+                isAdmin = await checkAdminRole();
+                
+                // Mostrar estado de administrador
+                if (isAdmin) {
+                    adminStatusDiv.innerHTML = '<div class="status-indicator admin-status">✅ Usuario con permisos de administrador</div>';
+                } else {
+                    adminStatusDiv.innerHTML = '<div class="status-indicator no-admin-status">⚠️ Usuario sin permisos de administrador (no podrás eliminar productos)</div>';
+                }
+                
+                // Cargar productos
+                const products = await getProducts();
+                resultDiv.innerHTML = `<p>Se han cargado ${products.length} productos.</p>`;
+                
+                // Mostrar productos en la tabla
+                displayProducts(products);
+            } catch (error) {
+                resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+                adminStatusDiv.innerHTML = '';
+                isAdmin = false;
+            }
+        });
+        
+        // Función para mostrar productos en la tabla
+        function displayProducts(products) {
+            const tbody = document.querySelector('#productList tbody');
+            tbody.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // Crear celda para ID (mostrando versión corta)
+                const idCell = document.createElement('td');
+                const shortId = product.id.substring(0, 8) + '...';
+                idCell.textContent = shortId;
+                idCell.title = product.id; // Mostrar ID completo al pasar el cursor
+                row.appendChild(idCell);
+                
+                // Nombre
+                const nameCell = document.createElement('td');
+                nameCell.textContent = product.name;
+                row.appendChild(nameCell);
+                
+                // Categoría
+                const categoryCell = document.createElement('td');
+                categoryCell.textContent = product.category;
+                row.appendChild(categoryCell);
+                
+                // Precio
+                const priceCell = document.createElement('td');
+                priceCell.textContent = new Intl.NumberFormat('es-CL', { 
+                    style: 'currency', 
+                    currency: 'CLP' 
+                }).format(product.price);
+                row.appendChild(priceCell);
+                
+                // Stock
+                const stockCell = document.createElement('td');
+                stockCell.textContent = product.stock;
+                row.appendChild(stockCell);
+                
+                // Acciones
+                const actionsCell = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Eliminar';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.disabled = !isAdmin; // Deshabilitar si no es admin
+                
+                if (isAdmin) {
+                    deleteBtn.onclick = async () => {
+                        if (confirm(`¿Estás seguro de eliminar "${product.name}"?`)) {
+                            try {
+                                const success = await deleteProduct(product.id);
+                                if (success) {
+                                    row.remove();
+                                    document.getElementById('manageResult').innerHTML = 
+                                        `<p>Producto "${product.name}" eliminado correctamente.</p>`;
+                                }
+                            } catch (error) {
+                                document.getElementById('manageResult').innerHTML = 
+                                    `<p>Error al eliminar: ${error.message}</p>`;
+                            }
+                        }
+                    };
+                } else {
+                    deleteBtn.title = "Necesitas permisos de administrador para eliminar productos";
+                }
+                
+                actionsCell.appendChild(deleteBtn);
+                row.appendChild(actionsCell);
+                
+                tbody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
